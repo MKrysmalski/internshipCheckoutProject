@@ -1,14 +1,22 @@
+// Packages
 import { Module } from '@nestjs/common';
-import { ProductsModule } from './product/product.module';
-import { PaypalModule } from './paypal/paypal.module';
-import { CheckoutModule } from './checkout/checkout.module';
+import { TypegooseModule } from "nestjs-typegoose";
 
+// Modules
+import { CartModule } from './checkout/cart.module';
+import { PdfModule } from './pdf/pdf.module';
+
+// Conifgs
+import { OrderModule } from './order/order.module';
 
 @Module({
     imports: [
-        ProductsModule,
-        PaypalModule,
-        CheckoutModule
+        TypegooseModule.forRoot("mongodb://localhost:27017/murtfeld", {
+            useNewUrlParser: true,
+        }),
+        CartModule,
+        PdfModule,
+        OrderModule
     ],
     controllers: [],
     providers: [],

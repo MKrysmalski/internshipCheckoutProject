@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title></title>
+</head>
+
+<body>
+    <table>
+        <thead>
+            <td>
+                {% block header %}
+                {% endblock header %}
+            </td>
+        </thead>
+        <tbody>
+            <td>
+                {% block content %}
+                {% endblock content %}
+            </td>
+        </tbody>
+        
+        <tfoot>
+            <td>
+                {% block footer %}
+                {% endblock footer %}
+            </td>
+        </tfoot>
+    </table>
+</body>
+
+</html>

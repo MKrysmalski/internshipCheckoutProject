@@ -1,0 +1,12 @@
+{% extends 'master.twig' %}
+
+{% block content %}
+    <div>
+        Invoice content for all
+        <ul>
+        {% for item in items %}
+            <li>{{ item }}</li>
+        {% endfor %}
+        </ul>
+    </div>
+{% endblock content %}
