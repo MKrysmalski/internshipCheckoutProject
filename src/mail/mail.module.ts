@@ -8,19 +8,19 @@ import {HandlebarsAdapter} from "@nestjs-modules/mailer/dist/adapters/handlebars
   imports: [
     MailerModule.forRoot({
       transport: {
-        host: 'smtp.sendgrid.net',
+        host: 'w01553e9.kasserver.com',
         port: 465,
         tls: {
           ciphers: 'SSLv3',
         },
         secure: true, // true for 465, false for other ports
         auth: {
-          user: 'CheckoutMailer', // generated ethereal user
-          pass: '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', // generated ethereal password
+          user: 'm04542e1', // generated ethereal user
+          pass: 'JDZu-fdGUacP.r8xwG', // generated ethereal password
         },
       },
       defaults: {
-        from: '"nest-modules" mk@7pkonzepte.de', // outgoing email ID
+        from: '"nest-modules" ping@7pkonzepte.de', // outgoing email ID
       },
       template: {
         dir: process.cwd() + '/template/',

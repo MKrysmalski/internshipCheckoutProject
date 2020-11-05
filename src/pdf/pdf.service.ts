@@ -8,7 +8,7 @@ export class PdfService {
 
     constructor() {
         this.twing = new TwingEnvironment(
-            new TwingLoaderFilesystem('/home/steffen/Projects/Work/Murtfeld/Checkout/src/pdf/templates')
+            new TwingLoaderFilesystem('/home/michael/projects/CheckoutProject/Checkout/src/pdf/templates')
         );
     }
 

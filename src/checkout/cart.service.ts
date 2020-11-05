@@ -10,7 +10,7 @@ import { ReturnModelType } from "@typegoose/typegoose";
 @Injectable()
 export class CartService {
     constructor(
-        @InjectModel(Cart) private cartModel: ReturnModelType<typeof Cart>
+        @InjectModel(Cart) private cartModel: ReturnModelType<any>
     ) {}
 
     create() : Promise<Cart> {
