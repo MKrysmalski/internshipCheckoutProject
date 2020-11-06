@@ -36,7 +36,7 @@ export class CartController {
         @Body()
         addItemDto: AddItemDto
     ) {
-        this.cartService.addItem(id, addItemDto);
+        return this.cartService.addItem(id, addItemDto);
     }
 
     @Patch(':id/item')

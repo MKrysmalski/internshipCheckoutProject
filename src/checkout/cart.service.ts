@@ -2,23 +2,24 @@ import { Injectable } from '@nestjs/common';
 import { AddItemDto } from './dto/add-item.dto';
 import { UpdateItemDto } from './dto/update-item.dto';
 import { DeleteItemDto } from './dto/delete-item.dto';
-import { Cart } from './cart.entity';
-import { InjectModel } from "nestjs-typegoose";
+import { Cart, CartDocument } from './cart.schema';
 import { v4 as uuid } from 'uuid';
-import { ReturnModelType } from "@typegoose/typegoose";
+import { Model } from 'mongoose';
+import { InjectModel } from '@nestjs/mongoose';
 
 @Injectable()
 export class CartService {
     constructor(
-        @InjectModel(Cart) private cartModel: ReturnModelType<typeof Cart>
+        @InjectModel(Cart.name)
+        private cartModel: Model<CartDocument>
     ) {}
 
-    create() : Promise<Cart> {
+    create() {
         return new this.cartModel().save();
     }
 
-    getByCartId(id: uuid) : Promise<Cart> {
-        return this.cartModel.findOne(id).exec();
+    getByCartId(id: uuid) {
+        return this.cartModel.findById(id).exec();
     }
 
     getByUserId(userId: uuid) : Promise<Cart> {
@@ -29,16 +30,20 @@ export class CartService {
         this.cartModel.remove(id);
     }
 
-    async addItem(id: uuid, addItemDto: AddItemDto) : Promise<Cart> {
-        let cart = await this.cartModel.findOne(id)
+    async addItem(id: uuid, addItemDto: AddItemDto) {
+        let cart = await this.getByCartId(id)
         
         cart.items.concat(addItemDto.items);
+        
+        //this.cartModel.update(cart);
+
+        console.log(addItemDto)
         
         return cart.save();
     }
 
     async updateItem(id: uuid, updateItemDto: UpdateItemDto) {
-        let cart = await this.cartModel.findOne(id);
+        let cart = await this.getByCartId(id);
     }
 
     async deleteItem(id: uuid, deleteItemDto: DeleteItemDto) {
