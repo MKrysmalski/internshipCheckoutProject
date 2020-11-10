@@ -9,6 +9,7 @@ import { PdfModule } from './pdf/pdf.module';
 // Conifgs
 import { OrderModule } from './order/order.module';
 import { MailModule } from './mail/mail.module';
+import { PaypalModule } from './paypal/paypal.module';
 
 @Module({
     imports: [
@@ -18,7 +19,8 @@ import { MailModule } from './mail/mail.module';
         CartModule,
         PdfModule,
         OrderModule,
-        MailModule
+        MailModule,
+        PaypalModule
     ],
     controllers: [],
     providers: [],
