@@ -6,8 +6,6 @@ import { Cart, CartDocument } from './cart.schema';
 import { v4 as uuid } from 'uuid';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
-import { Item } from './types/item.type';
-import { merge } from 'rxjs';
 
 @Injectable()
 export class CartService {

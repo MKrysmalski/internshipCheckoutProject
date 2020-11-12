@@ -2,6 +2,12 @@
 /dist
 /node_modules
 
+# Configs
+mailer.config.ts
+mongodb.config.ts
+paypal.config.ts
+pdf.config.ts
+
 # Logs
 logs
 *.log
