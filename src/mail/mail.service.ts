@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import {MailerService} from "@nestjs-modules/mailer";
 const nodemailer=require("nodemailer");
 import { TwingEnvironment, TwingLoaderFilesystem } from 'twing';
+import { MailConfig } from 'config/mailer.config'
 
 @Injectable()
 export class MailService {
@@ -10,7 +11,7 @@ export class MailService {
     constructor(
         private readonly mailerService:MailerService,) {
             this.twing=new TwingEnvironment(
-                new TwingLoaderFilesystem('/home/michael/projects/CheckoutProject/Checkout/src/mail/templates'))
+                new TwingLoaderFilesystem(MailConfig.templatePath))
         }
 
     async sendMail(templateName: string,data: any):Promise<void>{
