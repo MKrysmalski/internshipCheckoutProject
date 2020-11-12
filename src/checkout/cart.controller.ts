@@ -1,7 +1,8 @@
-import { Body, Controller, Delete, Get, Param, ParseUUIDPipe, Patch, Post, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseUUIDPipe, Patch, Post, Query, ValidationPipe } from '@nestjs/common';
 import { CartService } from './cart.service';
 import { AddItemDto } from './dto/add-item.dto';
 import { DeleteItemDto } from './dto/delete-item.dto';
+import { CreateCartDto } from './dto/create-cart.dto';
 import { UpdateItemDto } from './dto/update-item.dto';
 
 @Controller('cart')
@@ -9,16 +10,24 @@ export class CartController {
     constructor(private cartService: CartService) { }
 
     @Post()
-    createCart() {
-        return this.cartService.create();
+    createCart(@Body(ValidationPipe) createCartDto: CreateCartDto ) {
+        return this.cartService.create(createCartDto);
+    }
+
+    @Get()
+    getCartByUser(
+        @Query('userId', ValidationPipe)
+        userId: string
+    ) {
+        return this.cartService.getCartByUserId(userId);
     }
 
     @Get('/:id')
-    getCart(
+    getCartById(
         @Param('id', ParseUUIDPipe)
         id: string
     ) {
-        return this.cartService.getByCartId(id)
+        return this.cartService.getCartById(id)
     }
 
     @Delete('/:id')
