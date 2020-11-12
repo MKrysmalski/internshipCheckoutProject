@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseUUIDPipe, Patch, Post, ValidationPipe } from '@nestjs/common';
 import { CartService } from './cart.service';
 import { AddItemDto } from './dto/add-item.dto';
 import { DeleteItemDto } from './dto/delete-item.dto';
@@ -15,7 +15,7 @@ export class CartController {
 
     @Get('/:id')
     getCart(
-        @Param('id')
+        @Param('id', ParseUUIDPipe)
         id: string
     ) {
         return this.cartService.getByCartId(id)
@@ -23,7 +23,7 @@ export class CartController {
 
     @Delete('/:id')
     deleteCart(
-        @Param('id')
+        @Param('id', ParseUUIDPipe)
         id: string
     ) {
         this.cartService.delete(id);
@@ -31,19 +31,19 @@ export class CartController {
 
     @Post('/:id/item')
     addItem(
-        @Param('id')
+        @Param('id', ParseUUIDPipe)
         id: string,
-        @Body()
+        @Body(ValidationPipe)
         addItemDto: AddItemDto
     ) {
-        this.cartService.addItem(id, addItemDto);
+        return this.cartService.addItem(id, addItemDto);
     }
 
     @Patch(':id/item')
     updateItem(
-        @Param('id')
+        @Param('id', ParseUUIDPipe)
         id: string,
-        @Body()
+        @Body(ValidationPipe)
         updateItemDto: UpdateItemDto
     ) {
         this.cartService.updateItem(id, updateItemDto);
@@ -51,9 +51,9 @@ export class CartController {
 
     @Delete('/:id/item')
     deleteItem(
-        @Param('id')
+        @Param('id', ParseUUIDPipe)
         id: string,
-        @Body()
+        @Body(ValidationPipe)
         deleteItemDto: DeleteItemDto
     ) {
         this.cartService.deleteItem(id, deleteItemDto);

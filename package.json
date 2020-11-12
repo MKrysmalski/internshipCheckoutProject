@@ -30,10 +30,12 @@
     "@typegoose/typegoose": "^7.4.1",
     "@types/handlebars": "^4.1.0",
     "@types/puppeteer": "^5.4.0",
-    "axios": "^0.21.0",
-    "handlebars": "^4.7.6",
+    "class-transformer": "^0.3.1",
+    "class-validator": "^0.12.2",
     "mongodb": "^3.6.2",
     "mongoose": "^5.10.11",
+    "axios": "^0.21.0",
+    "handlebars": "^4.7.6",
     "nestjs-typegoose": "^7.1.38",
     "nodemailer": "^6.4.14",
     "puppeteer": "^5.4.1",
@@ -42,7 +44,6 @@
     "rxjs": "^6.5.4",
     "swagger-ui-express": "^4.1.4",
     "twing": "^5.0.2",
-    "typegoose": "^5.9.1",
     "uuid": "^8.3.0"
   },
   "devDependencies": {

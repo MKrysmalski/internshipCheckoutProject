@@ -1,14 +1,13 @@
 import { Module } from '@nestjs/common';
-import { TypegooseModule } from "nestjs-typegoose";
-
 import { CartController } from './cart.controller';
 import { CartService } from './cart.service';
-import { Cart } from './cart.entity';
+import { Cart, CartSchema } from './cart.schema';
+import { MongooseModule } from '@nestjs/mongoose';
 
 @Module({
     controllers: [CartController],
     imports: [
-        TypegooseModule.forFeature([Cart]),
+        MongooseModule.forFeature([{ name: Cart.name, schema: CartSchema }])
     ],
     providers: [CartService]
 })
