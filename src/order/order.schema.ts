@@ -19,13 +19,11 @@ export class Order {
     })
     readonly _id: string;
 
-    @Prop({
-        unique: true,
-        index: true,
-        type: String,
-        sparse: true
-    })
+    @Prop()
     userId: uuid;
+
+    @Prop()
+    email: string
 
     @Prop()
     status: string;
