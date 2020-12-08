@@ -4,6 +4,7 @@ import { PaypalService } from './paypal.service';
 
 @Module({
   controllers: [PaypalController],
-  providers: [PaypalService]
+  providers: [PaypalService],
+  exports:[PaypalService]
 })
-export class PaypalModule {}
+export class PaypalModule { }

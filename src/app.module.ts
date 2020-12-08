@@ -14,7 +14,7 @@ import { PaypalModule } from './paypal/paypal.module';
 
 @Module({
     imports: [
-        MongooseModule.forRoot("mongodb://localhost:27017/murtfeld"),
+        MongooseModule.forRoot(""),
         CartModule,
         PdfModule,
         OrderModule,
@@ -24,4 +24,4 @@ import { PaypalModule } from './paypal/paypal.module';
     controllers: [],
     providers: [],
 })
-export class AppModule {}
+export class AppModule { }

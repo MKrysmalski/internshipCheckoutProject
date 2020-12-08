@@ -1,8 +1,8 @@
 let MongoDbConfig = {
-    url: '',
-    collection: '',
-    user: '',
-    password: '',
+    //url: 'localhost:27017',
+    //collection: 'murtfeld',
+    //user: 'rootuser',
+    //password: 'rootpassword',
 }
 
 export { MongoDbConfig }

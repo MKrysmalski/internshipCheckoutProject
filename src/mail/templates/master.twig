@@ -7,25 +7,14 @@
 
 <body style="margin: 0; padding: 0; width:100%">
     <table border="1" cellpadding="0" cellspacing="0" width="600" style="border-collapse: collapse;">
-        <thead>
-            <td>
-                {% block header %}
-                {% endblock header %}
-            </td>
-        </thead>
-        <tbody>
-            <td>
-                {% block content %}
-                {% endblock content %}
-            </td>
-        </tbody>
+        {% block header %}
+        {% endblock header %}
+
+        {% block content %}
+        {% endblock content %}
         
-        <tfoot>
-            <td>
-                {% block footer %}
-                {% endblock footer %}
-            </td>
-        </tfoot>
+        {% block footer %}
+        {% endblock footer %} 
     </table>
 </body>
 

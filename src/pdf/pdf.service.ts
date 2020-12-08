@@ -1,11 +1,14 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { TwingEnvironment, TwingLoaderFilesystem } from 'twing';
 import * as puppeteer from 'puppeteer';
-import { PdfConfig } from '../../config/pdf.config'
+import { PdfConfig } from '../../config/example.pdf.config'
+import { Logger } from '@nestjs/common';
 
 @Injectable()
 export class PdfService {
+    
     private twing: TwingEnvironment;
+    private logger = new Logger('pdfService');
 
     constructor() {
         this.twing = new TwingEnvironment(
@@ -14,16 +17,21 @@ export class PdfService {
     }
 
     async generatePdf(templateName: string, data: any) : Promise<Buffer> {
-        const template = await this.twing.load(templateName + '/' + templateName + '.twig');
-        const html = await template.render(data);
-
-        const browser = await puppeteer.launch();
-        const page = await browser.newPage();
+        
+        
+        let template = await this.twing.load(templateName + '/' + templateName + '.twig');
+        
+        let html = await template.render(data);
+        
+        let browser = await puppeteer.launch();
+        
+        let page = await browser.newPage();
         await page.setContent(html);
-
-        const pdf = await page.pdf({ path: 'invoice.pdf', format: 'A4' });
+        
+        let pdf = await page.pdf({ path: 'invoice.pdf', format: 'A4' });
         await browser.close();
 
+        this.logger.verbose(`pdf successfully created`);
         return pdf;
     }
 }

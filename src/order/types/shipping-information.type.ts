@@ -1,10 +1,10 @@
 
 export class ShippingInformation {
-    street: string;
-    city: string;
-    postalCode: string;
-    company: string;
-    addressSuffix: string;
-    firstname: string;
-    lastname: string;  
+    constructor(
+        public street:string,
+        public city:string,public postalCode: string,
+        public company: string,
+        public addressSuffix: string,
+        public firstname: string,
+        public lastname: string){ }  
 }

@@ -2,11 +2,11 @@ import { Module } from '@nestjs/common';
 import { MailService } from './mail.service';
 import { MailController } from './mail.controller';
 import { MailerModule } from "@nestjs-modules/mailer";
-import { MailConfig } from 'config/mailer.config'
+import { MailConfig } from 'config/example.mailer.config'
 
 @Module({
     imports: [
-        MailerModule.forRoot({
+        MailerModule.forRoot( {
             transport: MailConfig.connection,
             defaults: {
                 from: '"nest-modules" ping@7pkonzepte.de', // outgoing email ID
@@ -14,6 +14,7 @@ import { MailConfig } from 'config/mailer.config'
         }),
     ],
     providers: [MailService],
-    controllers: [MailController]
+    controllers: [MailController],
+    exports: [MailService]
 })
-export class MailModule {}
+export class MailModule { }

@@ -1,17 +1,17 @@
 let MailConfig = {
     connection: {
-        host: '',
+        host: 'w01553e9.kasserver.com',
             port: 465,
         tls: {
             ciphers: 'SSLv3',
         },
         secure: true, // true for 465, false for other ports
         auth: {
-            user: '', // generated ethereal user
-            pass: '', // generated ethereal password
+            user: 'm04542e1',
+            pass: 'JDZu-fdGUacP.r8xwG',
         },
     },
-    templatePath: ''
+    templatePath: '/home/michael/projects/CheckoutProject/Checkout/src/mail/templates'
 }
 
 export { MailConfig }
