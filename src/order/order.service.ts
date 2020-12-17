@@ -21,13 +21,13 @@ import { Logger } from '@nestjs/common';
 export class OrderService {
     
     private paypalService=new PaypalService();
-    private pdfService=new PdfService();
     private logger = new Logger('orderService');
 
     constructor(
         @InjectModel(Order.name)
         private orderModel:Model<OrderDocument>,
-        private mailService:MailService
+        private mailService:MailService,
+        private pdfService:PdfService
     ){ }
 
     async createOrder(
@@ -92,7 +92,7 @@ export class OrderService {
             shippingLastname
         );
         
-        const{ email, authorized, userId, userSecret, costs, coupon } = createOrderDto;
+        const{ email, authorized, userId, userSecret, costs, items } = createOrderDto;
         const order = new this.orderModel();
         
         order.userId = userId;
@@ -100,23 +100,44 @@ export class OrderService {
         order.email = email;
         order.authorized = authorized;
         order.status = "CREATED";
-        order.costs = costs - costs * coupon; // Coupon Calculation
+        order.costs = costs;
+        order.items = items;
         order.shippingInformation = shippingInformation;
         order.billingInformation = billingInformation;
         
         const paymentResponse: boolean = null;
+        if(order.billingInformation.paymentMethod=="paypal"){
+            try {
+                const paymentResponse = await this.paypalService.createOrder(userId,userSecret,shippingInformation,billingInformation,order.costs);
+                order.paymentId = paymentResponse.paymentId;
+                order.status="WAIT FOR PAYPALAUTHENTICATION";
+                this.logger.verbose(`Order: ${order.orderId} successfully created for user: ${order.userId}`);
+                return {
+                    order: await order.save(),
+                    payment: paymentResponse.authUrl
+                };
+            } catch (error) {
+                throw error;
+            } 
+        } else if(order.billingInformation.paymentMethod=="prepaid") {
 
-        try {
-            const paymentResponse = await this.paypalService.createOrder(userId,userSecret,shippingInformation,billingInformation,order.costs);
-            order.paymentId = paymentResponse.paymentId;
-            this.logger.verbose(`Order: ${order.orderId} successfully created for user: ${order.userId}`);
-            return {
+            const pdf = this.pdfService.generatePdf(order.billingInformation.billingBrandName,order);
+            this.mailService.sendMail(order.billingInformation.billingBrandName,order,pdf);
+            order.status='WAIT FOR PAYMENT';
+
+            return { 
                 order: await order.save(),
-                payment: paymentResponse.authUrl
-            };
-        } catch (error) {
-            throw error;
-        } 
+                payment:`Email send to ${order.billingInformation.email}: `+order.status
+            }
+        } else if(order.billingInformation.paymentMethod=="billing") {
+
+            const pdf = this.pdfService.generatePdf(order.billingInformation.billingBrandName,order);
+            this.mailService.sendMail(order.billingInformation.billingBrandName,order,pdf);
+            order.status='WAIT FOR PAYMENT';
+
+        } else {
+            return null;
+        }
     }
 
     getOrderById(id:string) : Promise<Order> {
@@ -219,11 +240,11 @@ export class OrderService {
                 order.status="PAYED";
                 this.logger.verbose(`Order: ${order.orderId} successfully authorized for user: ${order.userId}`);
 
-                const pdf = await this.pdfService.generatePdf(order.billingInformation.billingBrandName,"");
+                const pdf = await this.pdfService.generatePdf(order.billingInformation.billingBrandName,order);
 
                 const response = await Promise.all([
                     order.save(),
-                    this.mailService.sendMail(order.billingInformation.billingBrandName,"",pdf),
+                    this.mailService.sendMail(order.billingInformation.billingBrandName,order,pdf),
                 ]);
 
                 return response[0];

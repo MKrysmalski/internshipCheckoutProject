@@ -39,7 +39,7 @@ export class CartController {
     }
 
     @Post('/:id/item')
-    addItem(
+    async addItem(
         @Param('id', ParseUUIDPipe)
         id: string,
         @Body(ValidationPipe)

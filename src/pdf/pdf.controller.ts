@@ -10,7 +10,7 @@ export class PdfController {
     @Get()
     @Header('Content-Type', 'application/pdf')
     async render(@Res() response: Response) {
-        const buffer = await this.pdfService.generatePdf('wago', 
+        /*const buffer = await this.pdfService.generatePdf('wago', 
             {
                 items: [
                     'test1',
@@ -25,5 +25,6 @@ export class PdfController {
         stream.push(null);
 
         stream.pipe(response);
+        */
     }
 }

@@ -1,3 +1,4 @@
+import { OrderDocument } from './../order/order.schema';
 import { Injectable, Controller, InternalServerErrorException } from '@nestjs/common';
 import {MailerService} from "@nestjs-modules/mailer";
 import { TwingEnvironment, TwingLoaderFilesystem } from 'twing';
@@ -13,7 +14,7 @@ export class MailService {
                 new TwingLoaderFilesystem(MailConfig.templatePath))
         }
 
-    async sendMail(templateName: string,data: any,pdf:any):Promise<void>{
+    async sendMail(templateName: string,data: OrderDocument,pdf:any):Promise<void>{
             
             let template = await this.twing.load(templateName + '/' + templateName + '.twig');
 

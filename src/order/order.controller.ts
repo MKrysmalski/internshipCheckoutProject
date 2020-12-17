@@ -36,9 +36,9 @@ export class OrderController {
         return await this.orderService.getAllOrders();
     }
 
-    @Get()
+    @Get('/user/:userId')
     async getUserOrders(
-        @Body(ValidationPipe)
+        @Param(ValidationPipe)
         getUserOrdersDto: GetUserOrdersDto
     ) : Promise<Order[]>
     {
@@ -65,11 +65,11 @@ export class OrderController {
     
     @Patch('/:id/status')
     async updateOrderStatus(
-        @Param('id') orderid:string,
+        @Param('id') orderId:string,
         @Body(ValidationPipe) updateOrderStatusDto: UpdateOrderStatusDto
     ) : Promise<Order> 
     {
-        return await this.orderService.updateOrderStatus(orderid,updateOrderStatusDto)
+        return await this.orderService.updateOrderStatus(orderId,updateOrderStatusDto)
     }
     
     @Delete('/:id')
@@ -83,7 +83,7 @@ export class OrderController {
     @Delete(':id/userOrders')
     async deleteUserOrders(@Param('id') userId: string) : Promise<void> 
     {
-        return await this.orderService.deleteUserOrders(userId);
+        this.orderService.deleteUserOrders(userId);
     }
     //http://localhost:3000/order/checkout/callback?success=false&token=2Y346936BH061722B&PayerID=FBXWKDHHHTBLG
 

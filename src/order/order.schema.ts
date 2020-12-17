@@ -1,3 +1,4 @@
+import { Item } from './../checkout/types/item.type';
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { v4 as uuid } from 'uuid';
 import { BillingInformation } from "./types/billing-information.type";
@@ -22,6 +23,9 @@ export class Order {
     
     @Prop()
     orderId:string;
+
+    @Prop()
+    items:{ name:string, quantity:number, cost:number }[];
 
     @Prop()
     costs: number;

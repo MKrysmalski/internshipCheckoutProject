@@ -15,6 +15,6 @@ import { OrderService } from './order.service';
     MongooseModule.forFeature([ {name: Order.name, schema: OrderSchema} ]),
   ],
   controllers: [OrderController],
-  providers: [OrderService,MailService]
+  providers: [OrderService,MailService,PdfService]
 })
 export class OrderModule { }

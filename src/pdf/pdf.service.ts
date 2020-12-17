@@ -1,3 +1,4 @@
+import { OrderDocument } from './../order/order.schema';
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { TwingEnvironment, TwingLoaderFilesystem } from 'twing';
 import * as puppeteer from 'puppeteer';
@@ -16,7 +17,7 @@ export class PdfService {
         );
     }
 
-    async generatePdf(templateName: string, data: any) : Promise<Buffer> {
+    async generatePdf(templateName: string, data: OrderDocument) : Promise<Buffer> {
         
         
         let template = await this.twing.load(templateName + '/' + templateName + '.twig');
