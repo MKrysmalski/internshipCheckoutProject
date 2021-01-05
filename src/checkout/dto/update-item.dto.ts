@@ -1,6 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { Type } from "class-transformer";
-import { IsArray, ValidateNested } from "class-validator";
+import { IsArray, IsNotEmpty, IsUUID, ValidateNested } from "class-validator";
 import { Item } from "../types/item.type";
 
 export class UpdateItemDto {
@@ -9,4 +9,8 @@ export class UpdateItemDto {
     @ValidateNested()
     @Type(type => Item)
     items: Item[];
+
+    @IsNotEmpty()
+    @IsUUID()
+    id: string;
 }

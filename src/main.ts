@@ -1,23 +1,23 @@
-import { NestFactory } from '@nestjs/core';
-import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
-import { AppModule } from './app.module';
 import { Logger } from '@nestjs/common';
+import { NestFactory } from '@nestjs/core';
+import { AppModule } from './app.module';
+import { Transport } from '@nestjs/microservices';
+import { join } from 'path'
+
+const logger = new Logger('Main');
+const microserviceOptions = {
+    transport: Transport.GRPC,
+    options: {
+        url:'localhost:4321',
+        package: 'app',
+        protoPath: join(__dirname, '../../src/grpc/app.proto'),
+    },
+}
 
 async function bootstrap() {
-
-    const logger = new Logger('bootstrap');
-    const app = await NestFactory.create(AppModule);
-    const options = new DocumentBuilder()
-        .setTitle('Checkout')
-        .setDescription('Checkout API')
-        .setVersion('1.0')
-        .addTag('checkout')
-        .build();
-    const document = SwaggerModule.createDocument(app, options);
-    
-    SwaggerModule.setup('api', app, document);
-
-    await app.listen(3000);
-    logger.log(`Application listening on port 3000`);
+    const app = await NestFactory.createMicroservice(AppModule,microserviceOptions);
+    await app.listen(()=> {
+        logger.log('Microservice is listening');
+    });
 }
 bootstrap();

@@ -7,45 +7,45 @@ export class BillingInformationDto{
     billingCountryCode: string;
 
     @IsNotEmpty()
-    billingStreet:string;
+    billingStreet: string;
 
     @IsNotEmpty()
-    billingCity:string;
+    billingCity: string;
 
     @IsNotEmpty()
-    billingCountry:string
+    billingCountry: string
 
     @IsNotEmpty()
-    billingPostalCode:string;
+    billingPostalCode: string;
 
     @IsOptional()
-    billingCompany:string;
+    billingCompany: string;
 
     @IsNotEmpty()
-    billingAddressSuffix:string;
+    billingAddressSuffix: string;
 
     @IsNotEmpty()
-    billingEmail:string;
+    billingEmail: string;
 
     @IsOptional()
-    billingTitle:string;
+    billingTitle: string;
 
     @IsNotEmpty()
-    billingFirstname:string;
+    billingFirstname: string;
 
     @IsNotEmpty()
-    billingLastname:string;
+    billingLastname: string;
 
     @IsNotEmpty()
-    billingBirthday:string;
+    billingBirthday: string;
 
     @IsNotEmpty()
-    billingCurrencyCode:string;
+    billingCurrencyCode: string;
 
     @IsNotEmpty()
-    billingBrandName:string;
+    billingBrandName: string;
 
     @IsNotEmpty()
-    billingPaymentMethod:string;
+    billingPaymentMethod: string;
 
 }

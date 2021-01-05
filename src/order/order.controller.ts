@@ -1,3 +1,6 @@
+import { DeleteOrderDto } from './dto/delete-order.dto';
+import { GetOrderStatusDto } from './dto/get-order-by-status.dto';
+import { GetOrderByIdDto } from './dto/get-order-by-id.dto';
 import { CallbackDto } from './dto/callback.dto';
 import { OrderCreated } from '../order/orderCreated';
 import { ShippingInformationDto } from './dto/shipping-information.dto';
@@ -9,6 +12,7 @@ import { CreateOrderDto } from './dto/create-order.dto';
 import { Body, Controller, Delete, Get, Param, Patch, Post, ValidationPipe, Res, Query } from '@nestjs/common';
 import { OrderService } from './order.service';
 import { Logger } from '@nestjs/common';
+import { GrpcMethod } from '@nestjs/microservices';
 
 
 @Controller('order')
@@ -17,79 +21,70 @@ export class OrderController {
 
     constructor(private orderService: OrderService) { }
 
-    @Post('/checkout')
+    @GrpcMethod('AppController','CreateOrder')
     async createOrder(
-        @Body(ValidationPipe)
         createOrderDto: CreateOrderDto,
-        @Body(ValidationPipe)
-        billingInformationDto: BillingInformationDto,
-        @Body(ValidationPipe)
-        shippingInformationDto: ShippingInformationDto
-    ) : Promise<OrderCreated> 
-    {
-        return this.orderService.createOrder(createOrderDto, shippingInformationDto, billingInformationDto);
+    ) {
+        
+        const result = await this.orderService.createOrder(createOrderDto);
+        console.log(result);
+        return result;
+    }
+    @GrpcMethod('AppController','GetAllOrders')
+    async getAllOrders() {  
+        return {orders: await this.orderService.getAllOrders()}
     }
 
-    @Get('/test')
-    async getAllOrders(): Promise<Order[]> 
-    {//for Debugging
-        return await this.orderService.getAllOrders();
-    }
-
-    @Get('/user/:userId')
+    @GrpcMethod('AppController','GetUserOrders')
     async getUserOrders(
-        @Param(ValidationPipe)
         getUserOrdersDto: GetUserOrdersDto
-    ) : Promise<Order[]>
-    {
-        return await this.orderService.getUserOrders(getUserOrdersDto);
+    ) {
+        return {orders: await this.orderService.getUserOrders(getUserOrdersDto)};
     }
 
-    @Get('/:id')
+    @GrpcMethod('AppController','GetOrderById')
     async getOrderById(
-        @Param('id') 
-        orderId:string
-    ) : Promise<Order> 
-    {
-        return await this.orderService.getOrderById(orderId);
+        getOrder:GetOrderByIdDto
+    ) {
+        console.log(getOrder.id);
+        return await this.orderService.getOrderById(getOrder.id);
     }
     
-    @Get('/:id/status')
+    @GrpcMethod('AppController','GetOrderStatus')
     async getOrderStatus(
-        @Param('id')
-        orderId: string
-    ) : Promise<boolean> 
-    {
-        return await this.orderService.getOrderAuthorization(orderId);
+        orderStatus: GetOrderStatusDto
+    ) {
+        return {orderStatus:await this.orderService.getOrderAuthorization(orderStatus.id)};
     }
     
-    @Patch('/:id/status')
+    @GrpcMethod('AppController','UpdateOrderStatus')
     async updateOrderStatus(
-        @Param('id') orderId:string,
-        @Body(ValidationPipe) updateOrderStatusDto: UpdateOrderStatusDto
-    ) : Promise<Order> 
-    {
-        return await this.orderService.updateOrderStatus(orderId,updateOrderStatusDto)
+        updateOrder: UpdateOrderStatusDto
+    ) {
+        console.log(updateOrder.orderId);
+        console.log(updateOrder.orderStatus);
+        return await this.orderService.updateOrderStatus(updateOrder);
+        
     }
     
-    @Delete('/:id')
+    @GrpcMethod('AppController','DeleteOrder')
     async deleteOrder(
-        @Param('id') orderId:string
-    ) : Promise<void>
-    {
-        return await this.orderService.deleteOrder(orderId);
+        deleteOrder: DeleteOrderDto
+    ) {
+        this.orderService.deleteOrder(deleteOrder.id);
+        return {};
     }
 
-    @Delete(':id/userOrders')
-    async deleteUserOrders(@Param('id') userId: string) : Promise<void> 
-    {
-        this.orderService.deleteUserOrders(userId);
+    @GrpcMethod('AppController','DeleteUserOrders')
+    async deleteUserOrders(
+        deleteOrder: DeleteOrderDto) {
+        this.orderService.deleteUserOrders(deleteOrder.id);
+        return {};
     }
-    //http://localhost:3000/order/checkout/callback?success=false&token=2Y346936BH061722B&PayerID=FBXWKDHHHTBLG
 
-    @Post('/checkout/callback')
+    @GrpcMethod('AppController','Callback')
     async callback(
-        @Body(ValidationPipe) callbackDto:CallbackDto,
+        callbackDto: CallbackDto,
     ) {
         return await this.orderService.handleCallback(callbackDto);
     }

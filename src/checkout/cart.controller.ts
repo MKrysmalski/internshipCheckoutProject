@@ -1,70 +1,52 @@
+import { UserId, AddItem } from './../grpc/grpc.interface';
 import { Body, Controller, Delete, Get, Param, ParseUUIDPipe, Patch, Post, Query, ValidationPipe } from '@nestjs/common';
 import { CartService } from './cart.service';
 import { AddItemDto } from './dto/add-item.dto';
 import { DeleteItemDto } from './dto/delete-item.dto';
 import { CreateCartDto } from './dto/create-cart.dto';
 import { UpdateItemDto } from './dto/update-item.dto';
-
+import { GrpcMethod } from '@nestjs/microservices';
+import { CartId } from '../grpc/grpc.interface';
 @Controller('cart')
 export class CartController {
     constructor(private cartService: CartService) { }
 
-    @Post()
+    @GrpcMethod('AppController', 'CreateCart')
     createCart(@Body(ValidationPipe) createCartDto: CreateCartDto ) {
         return this.cartService.create(createCartDto);
     }
 
-    @Get()
-    getCartByUser(
-        @Query('userId', ValidationPipe)
-        userId: string
-    ) {
-        return this.cartService.getCartByUserId(userId);
+    @GrpcMethod('AppController', 'GetCartByUser')
+    getCartByUser(userId: UserId) {
+        return this.cartService.getCartByUserId(userId.id);
     }
 
-    @Get('/:id')
-    getCartById(
-        @Param('id', ParseUUIDPipe)
-        id: string
-    ) {
-        return this.cartService.getCartById(id)
+    @GrpcMethod('AppController', 'GetCartById')
+    getCartById(cardId: CartId) {
+        return this.cartService.getCartById(cardId.id);
     }
 
-    @Delete('/:id')
-    deleteCart(
-        @Param('id', ParseUUIDPipe)
-        id: string
-    ) {
-        this.cartService.delete(id);
+    @GrpcMethod('AppController', 'DeleteCartById')
+    deleteCart(cartid: CartId) {
+        console.log(cartid.id);
+        this.cartService.delete(cartid.id);
+        return {};
     }
 
-    @Post('/:id/item')
-    async addItem(
-        @Param('id', ParseUUIDPipe)
-        id: string,
-        @Body(ValidationPipe)
-        addItemDto: AddItemDto
-    ) {
-        return this.cartService.addItem(id, addItemDto);
+    @GrpcMethod('AppController','AddItem')
+    async addItem(addItem:AddItem) {
+        console.log(addItem);
+        return this.cartService.addItem(addItem.id, addItem);
     }
 
-    @Patch(':id/item')
-    updateItem(
-        @Param('id', ParseUUIDPipe)
-        id: string,
-        @Body(ValidationPipe)
-        updateItemDto: UpdateItemDto
-    ) {
-        this.cartService.updateItem(id, updateItemDto);
+    @GrpcMethod('AppController','UpdateItem')
+    updateItem(updateItemDto:UpdateItemDto) {
+        this.cartService.updateItem(updateItemDto.id, updateItemDto);
     }
 
-    @Delete('/:id/item')
-    deleteItem(
-        @Param('id', ParseUUIDPipe)
-        id: string,
-        @Body(ValidationPipe)
-        deleteItemDto: DeleteItemDto
-    ) {
-        this.cartService.deleteItem(id, deleteItemDto);
+    @GrpcMethod('AppController','DeleteItem')
+    deleteItem(deleteItemDto: DeleteItemDto) {
+        console.log(deleteItemDto);
+        return this.cartService.deleteItem(deleteItemDto.id, deleteItemDto);
     }
 }

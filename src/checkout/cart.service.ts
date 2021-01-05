@@ -1,5 +1,5 @@
+import { AddItem } from './../grpc/grpc.interface';
 import { Injectable } from '@nestjs/common';
-import { AddItemDto } from './dto/add-item.dto';
 import { UpdateItemDto } from './dto/update-item.dto';
 import { DeleteItemDto } from './dto/delete-item.dto';
 import { Cart, CartDocument } from './cart.schema';
@@ -45,9 +45,9 @@ export class CartService {
         this.cartModel.deleteOne({ _id: id }).exec();
     }
 
-    async addItem(id: uuid, addItemDto: AddItemDto) {
+    async addItem(id: uuid, addItem: AddItem) {
         let items = (await this.getCartById(id)).items;
-        items = items.concat(addItemDto.items);
+        items = items.concat(addItem.items);
         
         const hashMap = new Map();
 

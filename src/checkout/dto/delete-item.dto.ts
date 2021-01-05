@@ -1,5 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsArray, IsUUID } from "class-validator";
+import { IsArray, IsNotEmpty, IsUUID } from "class-validator";
 
 export class DeleteItemDto {
     @ApiProperty()
@@ -9,4 +9,8 @@ export class DeleteItemDto {
         { each: true }
     )
     ids: string[];
+
+    @IsNotEmpty()
+    @IsUUID()
+    id:string;
 }

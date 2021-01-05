@@ -1,24 +1,24 @@
 import { IsOptional,IsNotEmpty } from 'class-validator';
-export class ShippingInformationDto{
+export class ShippingInformationDto {
     
     @IsNotEmpty()
-    shippingStreet:string;
+    shippingStreet: string;
     
     @IsNotEmpty()
-    shippingCity:string;
+    shippingCity: string;
     
     @IsNotEmpty()
-    shippingPostalCode:string;
+    shippingPostalCode: string;
     
     @IsOptional()
-    shippingCompany:string;
+    shippingCompany: string;
     
     @IsNotEmpty()
-    shippingAddressSuffix:string;
+    shippingAddressSuffix: string;
     
     @IsNotEmpty()
-    shippingFirstname:string;
+    shippingFirstname: string;
     
     @IsNotEmpty()
-    shippingLastname:string;
+    shippingLastname: string;
 }

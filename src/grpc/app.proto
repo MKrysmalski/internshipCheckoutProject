@@ -1,0 +1,168 @@
+syntax = "proto3";
+
+package app;
+
+service AppController {
+    rpc GetCartById(CartId) returns (Cart);
+    rpc CreateCart(UserId) returns (Cart);
+    rpc GetCartByUser(UserId) returns (Cart);
+    rpc DeleteCartById(CartId) returns (voided);
+    rpc AddItem(AddItem) returns (voided);
+    rpc UpdateItem(UpdateItem) returns (voided);
+    rpc DeleteItem(DeleteItem) returns (voided);
+    rpc GetAllOrders(voided) returns (Orders);
+    rpc GetUserOrders(UserId) returns (Orders);
+    rpc GetOrderById(OrderId) returns (Order);
+    rpc GetOrderStatus(OrderId) returns (OrderStatus);
+    rpc CreateOrder(CreateOrder)returns (OrderResult);
+    rpc UpdateOrderStatus(UpdateOrder) returns (Order);
+    rpc DeleteOrder(OrderId) returns (voided);
+    rpc DeleteUserOrders(UserId) returns (voided);
+    rpc Callback(callback) returns (Order);
+}
+
+message voided {
+
+}
+
+message test {
+    repeated string items = 1;
+}
+
+message CartId {
+    string id = 1;
+}
+
+message UserId {
+    string id = 1;
+}
+
+message Cart {
+    string id = 1;
+    repeated Item items = 2;
+    string userId = 3;
+}
+
+message Carts {
+    repeated Cart carts = 1;
+}
+
+message Item {
+    string referencedId = 1;
+    int32 quantity = 2;
+    double costs = 3;
+}
+message AddItem {
+    repeated Item items = 1;
+    string id = 2;
+}
+
+
+message UpdateItem {
+    repeated Item items = 1;
+    string id = 2;
+}
+
+message DeleteItem {
+    repeated string ids = 1;
+    string id = 2;
+}
+
+message UpdateOrder {
+    string orderId = 1;
+    string orderStatus = 2;
+}
+message OrderStatus {
+    bool orderStatus = 1;
+}
+message CreateOrder {
+    string email = 1;
+    bool authorized = 2;
+    string orderStatus = 3;
+    string costs = 4;
+    string coupon = 5;
+    string shippingStreet = 6;
+    string shippingCity = 7;
+    string shippingPostalCode = 8;
+    string shippingCompany = 9;
+    string shippingAddressSuffix = 10;
+    string shippingFirstname = 11;
+    string shippingLastname = 12;
+    string billingStreet = 13;
+    string billingCity = 14;
+    string billingPostalCode = 15;
+    string billingAddressSuffix = 16;
+    string billingFirstname = 17;
+    string billingLastname = 18;
+    string billingPaymentMethod = 19;
+    string userId = 20;
+    string userSecret = 21;
+    string billingCountryCode = 22;
+    string billingCountry = 23;
+    string billingEmail = 24;
+    string billingBirthday = 25;
+    string billingCurrencyCode = 26;
+    string billingBrandName = 27;
+    repeated Item items = 28;
+    string billingCompany = 29;
+}
+message Orders {
+    repeated Order orders = 1;
+}
+
+message OrderResult {
+    Order order = 1;
+    string payment = 2;
+}
+
+message Order {
+    string _id = 1;
+    string userId = 2;
+    string orderId = 3;
+    string email = 4;
+    bool authorized = 5;
+    string status = 6;
+    double cost = 7;
+    shippingInformation shippingInformation = 8;
+    billingInformation billingInformation = 9;
+    string paymentId = 10;
+    string createdAt = 11;
+    string updatedAt = 12;
+}
+message OrderId {
+    string id = 1;
+}
+
+message shippingInformation {
+    string street = 1;
+    string city = 2;
+    string postalCode = 3;
+    string company = 4;
+    string addressSuffix = 5;
+    string firstname = 6;
+    string lastname = 7;
+}
+
+message billingInformation {
+    string countyCode = 1;
+    string street = 2;
+    string city = 3;
+    string country = 4;
+    string postalCode = 5;
+    string company = 6;
+    string addressSuffix = 7;
+    string email = 8;
+    string title = 9;
+    string firstname = 10;
+    string lastname = 11;
+    string birthday = 12;
+    string currencyCode = 13;
+    string billingBrandName = 14;
+    string paymentMethod = 15;
+}
+
+message callback {
+    bool success = 1;
+    string token = 2;
+    string PayerID = 3;
+}

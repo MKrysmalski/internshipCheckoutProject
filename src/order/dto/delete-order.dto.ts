@@ -1,6 +1,6 @@
 import { IsNotEmpty } from 'class-validator';
-export class GetUserOrdersDto {
+export class DeleteOrderDto {
     
     @IsNotEmpty()
-    id:string;
+    id: string;
 }

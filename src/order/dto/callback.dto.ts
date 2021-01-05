@@ -3,11 +3,11 @@ import { IsNotEmpty } from "class-validator";
 export class CallbackDto {
 
     @IsNotEmpty()
-    success:boolean;
+    success: boolean;
 
     @IsNotEmpty()
-    token:string;
+    token: string;
 
     @IsNotEmpty()
-    PayerID:string;
+    PayerID: string;
 }

@@ -1,5 +1,5 @@
 import { IsNotEmpty } from 'class-validator';
-export class GetUserOrdersDto {
+export class GetOrderStatusDto {
     
     @IsNotEmpty()
     id:string;

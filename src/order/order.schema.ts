@@ -25,7 +25,7 @@ export class Order {
     orderId:string;
 
     @Prop()
-    items:{ name:string, quantity:number, cost:number }[];
+    items: { referencedId:string, quantity:number, costs:number }[];
 
     @Prop()
     costs: number;
@@ -43,7 +43,7 @@ export class Order {
     paymentId: string;
 
     @Prop()
-    payerId:string;
+    payerId: string;
 
     @Prop()
     status: string;
