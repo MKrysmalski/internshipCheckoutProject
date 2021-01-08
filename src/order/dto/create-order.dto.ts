@@ -1,7 +1,8 @@
+import { PaymentMethod, BillingBrandName, Gender } from './../order.enum';
 import { Item } from './../../checkout/types/item.type';
 import { BillingInformation } from './../types/billing-information.type';
 import { ShippingInformation } from './../types/shipping-information.type';
-import { IsEmail, IsNotEmpty, IsOptional } from 'class-validator'
+import { IsArray, IsBoolean, IsCurrency, IsDecimal, IsEmail, IsEnum, isNotEmpty, IsNotEmpty, IsOptional, IsPostalCode, IsString } from 'class-validator'
 export class CreateOrderDto {
 
     @IsEmail()
@@ -9,44 +10,63 @@ export class CreateOrderDto {
     email: string;
 
     @IsNotEmpty()
+    @IsBoolean()
     authorized: boolean;
 
     @IsNotEmpty()
+    @IsString()
     userId: string;
 
-    @IsNotEmpty()
-    userSecret: string
-
-    @IsNotEmpty()
+    @IsOptional()
+    @IsCurrency()
     costs: number;
 
     @IsOptional()
+    @IsDecimal()
+    @IsString()
     coupon: number;
 
     @IsOptional()
-    items: { referencedId:string, quantity:number, costs:number }[];
+    @IsArray()
+    items: { 
+        referencedId:string, 
+        quantity:number, 
+        costs:number }[];
 
     //SHIPPING
 
     @IsNotEmpty()
+    @IsString()
     shippingStreet: string;
     
     @IsNotEmpty()
+    @IsString()
     shippingCity: string;
     
     @IsNotEmpty()
+    @IsPostalCode()
+    @IsString()
     shippingPostalCode: string;
     
     @IsOptional()
+    @IsString()
     shippingCompany: string;
     
     @IsNotEmpty()
+    @IsString()
     shippingAddressSuffix: string;
+
+    @IsNotEmpty()
+    @IsString()
+    @IsEnum(Gender)
+    shippingGender: string;
     
     @IsNotEmpty()
+    @IsString()
     shippingFirstname: string;
     
     @IsNotEmpty()
+    @IsString()
     shippingLastname: string;
 
     //BILLING
@@ -64,6 +84,7 @@ export class CreateOrderDto {
     billingCountry: string
 
     @IsNotEmpty()
+    @IsPostalCode()
     billingPostalCode: string;
 
     @IsOptional()
@@ -73,6 +94,7 @@ export class CreateOrderDto {
     billingAddressSuffix: string;
 
     @IsNotEmpty()
+    @IsEmail()
     billingEmail: string;
 
     @IsOptional()
@@ -85,15 +107,21 @@ export class CreateOrderDto {
     billingLastname: string;
 
     @IsNotEmpty()
+    @IsEnum(Gender)
+    billingGender: string;
+
+    @IsNotEmpty()
     billingBirthday: string;
 
     @IsNotEmpty()
     billingCurrencyCode: string;
 
     @IsNotEmpty()
+    @IsEnum(BillingBrandName)
     billingBrandName: string;
 
     @IsNotEmpty()
+    @IsEnum(PaymentMethod)
     billingPaymentMethod: string;
 
 }

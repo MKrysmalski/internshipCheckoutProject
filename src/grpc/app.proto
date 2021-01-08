@@ -96,15 +96,16 @@ message CreateOrder {
     string billingLastname = 18;
     string billingPaymentMethod = 19;
     string userId = 20;
-    string userSecret = 21;
-    string billingCountryCode = 22;
-    string billingCountry = 23;
-    string billingEmail = 24;
-    string billingBirthday = 25;
-    string billingCurrencyCode = 26;
-    string billingBrandName = 27;
-    repeated Item items = 28;
-    string billingCompany = 29;
+    string billingCountryCode = 21;
+    string billingCountry = 22;
+    string billingEmail = 23;
+    string billingBirthday = 24;
+    string billingCurrencyCode = 25;
+    string billingBrandName = 26;
+    repeated Item items = 27;
+    string billingCompany = 28;
+    string billingGender = 39;
+    string shippingGender = 30;
 }
 message Orders {
     repeated Order orders = 1;
@@ -122,7 +123,7 @@ message Order {
     string email = 4;
     bool authorized = 5;
     string status = 6;
-    double cost = 7;
+    double costs = 7;
     shippingInformation shippingInformation = 8;
     billingInformation billingInformation = 9;
     string paymentId = 10;
@@ -141,10 +142,11 @@ message shippingInformation {
     string addressSuffix = 5;
     string firstname = 6;
     string lastname = 7;
+    string gender = 8;
 }
 
 message billingInformation {
-    string countyCode = 1;
+    string countryCode = 1;
     string street = 2;
     string city = 3;
     string country = 4;
@@ -159,6 +161,7 @@ message billingInformation {
     string currencyCode = 13;
     string billingBrandName = 14;
     string paymentMethod = 15;
+    string gender = 16;
 }
 
 message callback {

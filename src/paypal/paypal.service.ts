@@ -77,14 +77,13 @@ export class PaypalService {
     
     async createOrder( 
         userId: string,
-        userSecret: string, 
         shippingInformation: ShippingInformation,
         billingInformation: BillingInformation,
         costs: number
     ):Promise<OrderPaymentResponse> {
         
         if(this.tokenExpired()) {
-            this.createBearer(userId, userSecret);
+            this.createBearer(userId, this.userSecret);
         }
         
         let response = await axios({

@@ -1,0 +1,8 @@
+{% block content %}
+
+<p>Wago Vorkasse: Vorkasse pdf hier.</p>
+{% for item in items %}
+    <p>{{item.costs}} prepaid</p>
+{% endfor %}
+
+{% endblock content %}

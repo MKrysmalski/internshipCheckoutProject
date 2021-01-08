@@ -12,6 +12,7 @@ export class BillingInformation {
         public title: string,
         public firstname: string,
         public lastname: string,
+        public gender: string,
         public birthday:string,
         public currencyCode:string,
         public billingBrandName:string,

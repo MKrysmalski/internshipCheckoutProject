@@ -14,20 +14,45 @@ export class MailService {
                 new TwingLoaderFilesystem(MailConfig.templatePath))
         }
 
-    async sendMail(templateName: string,data: OrderDocument,pdf:any):Promise<void>{
-            
-            let template = await this.twing.load(templateName + '/' + templateName + '.twig');
+    async sendMail(data: OrderDocument, pdf: any):Promise<void>{
+        
+        let mailAddr=undefined;
 
-            let html = await template.render(data);
+        if (data.billingInformation.paymentMethod == "prepaid") {
+            mailAddr = data.billingInformation.email;//Bei Vorkasse: Email an Kunde mit BankDaten von Wago/Murtfeldt
 
-            let result = await this.mailerService.sendMail( {
-                to: 'mk@7pkonzepte.de',
-                from: 'ping@7pkonzepte.de',
-                subject: `Email: ${templateName}`,
-                html:html,
-                attachments:[{contentType:"application/pdf",filename:"Rechnung.pdf",content:pdf}]
-            });
+        } else if (data.billingInformation.paymentMethod == "billing") {
+            mailAddr = data.billingInformation.email;//Bei Zahlen auf Rechnung: Bestellbestätigung mit Rechnung
+
+        } else if (data.billingInformation.paymentMethod == "paypal" ) {
+            mailAddr = data.billingInformation.email;//Bei Paypal: Bestellbestätigung mit Rechnung bei erfolgreicher Zahlung
+
+        } else if (data.billingInformation.paymentMethod == "deal") {//Bei Angebot: Email an Wago/Murtfeldt mit der jeweiligen Bestellung
+            if (data.billingInformation.billingBrandName=="wago") {
+                mailAddr = "wago@email.de";
+
+            } else if( data.billingInformation.billingBrandName=="murtfeldt" ) {
+                mailAddr = "murtfeldt@email.de";
+
+            } else {
+                return null;
+            }
+        } else {
+            return null;
+        }
+        console.log(data.billingInformation.billingBrandName + '/' + data.billingInformation.paymentMethod + '.twig');
+        let template = await this.twing.load(data.billingInformation.billingBrandName + '/' + data.billingInformation.paymentMethod + '.twig');
+
+        let html = await template.render(data);
+
+        let result = await this.mailerService.sendMail( {
+            to: 'mk@7pkonzepte.de',//mailAddr
+            from: 'ping@7pkonzepte.de',
+            subject: `Email: ${data.billingInformation.billingBrandName}`,
+            html:html,
+            attachments:[{contentType:"application/pdf",filename:"Rechnung.pdf",content:pdf}]
+        });
             
-            this.logger.verbose(result); 
+        this.logger.verbose(result); 
     }
 }

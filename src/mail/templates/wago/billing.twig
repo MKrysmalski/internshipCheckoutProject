@@ -1,8 +1,14 @@
 {% extends 'invoice.twig' %}
 
+
 {% block header %}
     {% include 'wago/components/header.twig' %}
 {% endblock header %}
+
+{% block content %}
+    {% include 'wago/components/billing.twig' %}
+{% endblock content %}
+
 
 {% block footer %}
     {% include 'wago/components/footer.twig' %}

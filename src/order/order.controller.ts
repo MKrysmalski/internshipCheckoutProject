@@ -25,11 +25,10 @@ export class OrderController {
     async createOrder(
         createOrderDto: CreateOrderDto,
     ) {
-        
         const result = await this.orderService.createOrder(createOrderDto);
-        console.log(result);
         return result;
     }
+
     @GrpcMethod('AppController','GetAllOrders')
     async getAllOrders() {  
         return {orders: await this.orderService.getAllOrders()}
@@ -46,7 +45,6 @@ export class OrderController {
     async getOrderById(
         getOrder:GetOrderByIdDto
     ) {
-        console.log(getOrder.id);
         return await this.orderService.getOrderById(getOrder.id);
     }
     

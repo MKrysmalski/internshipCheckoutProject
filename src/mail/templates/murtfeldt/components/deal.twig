@@ -1,0 +1,14 @@
+{% block content %}
+<tbody>
+    <td>
+    <p>Murtfeldt Angebot: Hier Bestellung/Bestellinformation die zurück an Murtfeldt gehen soll.</p>
+        <table>
+            {% for item in items %}
+            <tr>
+                <td>{{item.costs}} deal</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </td>
+</tbody>
+{% endblock content %}

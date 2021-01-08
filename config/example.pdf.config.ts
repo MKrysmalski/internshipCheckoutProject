@@ -1,5 +1,5 @@
 let PdfConfig = {
-    templatePath: '/home/michael/projects/CheckoutProject/Checkout/src/pdf/templates',
+    templatePath: '/home/michael/projects/grpc/Checkout/src/pdf/templates',
 }
 
 export { PdfConfig }

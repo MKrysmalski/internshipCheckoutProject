@@ -6,5 +6,6 @@ export class ShippingInformation {
         public company: string,
         public addressSuffix: string,
         public firstname: string,
-        public lastname: string){ }  
+        public lastname: string,
+        public gender: string) { }  
 }

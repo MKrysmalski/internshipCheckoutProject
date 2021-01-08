@@ -14,7 +14,8 @@ import { PaypalModule } from './paypal/paypal.module';
 
 @Module({
     imports: [
-        MongooseModule.forRoot("mongodb+srv://dbUser:dbPass@cluster0.gal98.mongodb.net/Cluster0?retryWrites=true&w=majority"),
+        //MongooseModule.forRoot("mongodb+srv://dbUser:dbPass@cluster0.gal98.mongodb.net/Cluster0?retryWrites=true&w=majority"),
+        MongooseModule.forRoot('mongodb://localhost/checkout'),
         CartModule,
         PdfModule,
         OrderModule,

@@ -31,12 +31,10 @@ export class OrderService {
     async createOrder(
         createOrderDto: CreateOrderDto,
     ): Promise<OrderCreated> {
-        
         const{ 
             email, 
             authorized, 
             userId, 
-            userSecret, 
             costs, 
             items,
             billingCountryCode,
@@ -50,6 +48,7 @@ export class OrderService {
             billingTitle,
             billingFirstname,
             billingLastname,
+            billingGender,
             billingBirthday,
             billingCurrencyCode,
             billingBrandName,
@@ -60,7 +59,8 @@ export class OrderService {
             shippingCompany,
             shippingAddressSuffix,
             shippingFirstname,
-            shippingLastname  } = createOrderDto;
+            shippingLastname,
+            shippingGender  } = createOrderDto;
 
             let billingInformation = new BillingInformation (
                 billingCountryCode,
@@ -74,6 +74,7 @@ export class OrderService {
                 billingTitle,
                 billingFirstname,
                 billingLastname,
+                billingGender,
                 billingBirthday,
                 billingCurrencyCode,
                 billingBrandName,
@@ -87,7 +88,8 @@ export class OrderService {
                 shippingCompany,
                 shippingAddressSuffix,
                 shippingFirstname,
-                shippingLastname
+                shippingLastname,
+                shippingGender
             );
 
         const order = new this.orderModel();
@@ -102,9 +104,12 @@ export class OrderService {
         order.shippingInformation = shippingInformation;
         order.billingInformation = billingInformation;
         
-        if(order.billingInformation.paymentMethod=="paypal") {
+        if (order.billingInformation.paymentMethod=="paypal") {
             try {
-                const paymentResponse = await this.paypalService.createOrder(userId,userSecret,shippingInformation,billingInformation,order.costs);
+                /*
+                Email versenden sobald Besellung erfolgreich.
+                */
+                const paymentResponse = await this.paypalService.createOrder(userId,shippingInformation,billingInformation,order.costs);
                 order.paymentId = paymentResponse.paymentId;
                 order.status="WAIT FOR PAYPALAUTHENTICATION";
                 this.logger.verbose(`Order: ${order.orderId} successfully created for user: ${order.userId}`);
@@ -115,22 +120,45 @@ export class OrderService {
             } catch (error) {
                 throw error;
             } 
-        } else if(order.billingInformation.paymentMethod=="prepaid") {
+        } else if (order.billingInformation.paymentMethod=="prepaid") {
 
-            const pdf = this.pdfService.generatePdf(order.billingInformation.billingBrandName,order);
-            this.mailService.sendMail(order.billingInformation.billingBrandName,order,pdf);
+            /*
+            Email versenden mit Bankdaten und Bestellung
+            */
+            const pdf = await this.pdfService.generatePdf(order);
+            await this.mailService.sendMail(order,pdf);
             order.status='WAIT FOR PAYMENT';
 
             return { 
                 order: await order.save(),
-                payment:`Email send to ${order.billingInformation.email}: `+order.status
+                payment:`Email send to ${ order.billingInformation.email }: ${order.status}`
             }
-        } else if(order.billingInformation.paymentMethod=="billing") {
 
-            const pdf = this.pdfService.generatePdf(order.billingInformation.billingBrandName,order);
-            this.mailService.sendMail(order.billingInformation.billingBrandName,order,pdf);
+        } else if (order.billingInformation.paymentMethod=="billing") {
+
+            /*
+            Email verenden mit Bankdaten und Bestellung
+            */
+            const pdf = await this.pdfService.generatePdf(order);
+            await this.mailService.sendMail(order,pdf);
             order.status='WAIT FOR PAYMENT';
+            return {
+                order: await order.save(),
+                payment: `Email send to ${ order.billingInformation.email }: ${ order.status }`
+            }
 
+        } else if (order.billingInformation.paymentMethod == "deal") {
+
+            /*
+            email an Versender schicken mit entsprechendem Einkaufswagen
+            */
+            const pdf = await this.pdfService.generatePdf(order);
+            order.status='WAIT FOR DEAL';
+            await this.mailService.sendMail(order,pdf);
+            return {
+                order: await order.save(),
+                payment: `Email send to ${ order.billingInformation.email }: ${ order.status }`
+            }
         } else {
             return null;
         }
@@ -238,11 +266,11 @@ export class OrderService {
                 order.status="PAYED";
                 this.logger.verbose(`Order: ${order.orderId} successfully authorized for user: ${order.userId}`);
 
-                const pdf = await this.pdfService.generatePdf(order.billingInformation.billingBrandName,order);
+                const pdf = await this.pdfService.generatePdf(order);
 
                 const response = await Promise.all([
                     order.save(),
-                    this.mailService.sendMail(order.billingInformation.billingBrandName,order,pdf),
+                    this.mailService.sendMail(order,pdf),
                 ]);
 
                 return response[0];
@@ -258,7 +286,7 @@ export class OrderService {
             } catch(error) {
                 this.logger.error(error.stack);
                 throw error;
-            }
+            }   
         }
     }
 }

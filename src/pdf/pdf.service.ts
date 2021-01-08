@@ -17,12 +17,12 @@ export class PdfService {
         );
     }
 
-    async generatePdf(templateName: string, data: OrderDocument) : Promise<Buffer> {
+    async generatePdf(order: OrderDocument) : Promise<Buffer> {
         
         
-        let template = await this.twing.load(templateName + '/' + templateName + '.twig');
+        let template = await this.twing.load(order.billingInformation.billingBrandName+ '/' + order.billingInformation.paymentMethod + '.twig');
         
-        let html = await template.render(data);
+        let html = await template.render(order);
         
         let browser = await puppeteer.launch();
         

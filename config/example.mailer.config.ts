@@ -11,7 +11,7 @@ let MailConfig = {
             pass: 'JDZu-fdGUacP.r8xwG',
         },
     },
-    templatePath: '/home/michael/projects/CheckoutProject/Checkout/src/mail/templates'
+    templatePath: '/home/michael/projects/grpc/Checkout/src/mail/templates'
 }
 
 export { MailConfig }
