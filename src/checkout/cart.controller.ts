@@ -13,6 +13,7 @@ export class CartController {
 
     @GrpcMethod('AppController', 'CreateCart')
     createCart(@Body(ValidationPipe) createCartDto: CreateCartDto ) {
+        console.log(createCartDto.id);
         return this.cartService.create(createCartDto);
     }
 
@@ -35,7 +36,6 @@ export class CartController {
 
     @GrpcMethod('AppController','AddItem')
     async addItem(addItem:AddItem) {
-        console.log(addItem);
         return this.cartService.addItem(addItem.id, addItem);
     }
 

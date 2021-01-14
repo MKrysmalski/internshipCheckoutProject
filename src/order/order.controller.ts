@@ -26,6 +26,7 @@ export class OrderController {
         createOrderDto: CreateOrderDto,
     ) {
         const result = await this.orderService.createOrder(createOrderDto);
+        console.log(result.order);
         return result;
     }
 

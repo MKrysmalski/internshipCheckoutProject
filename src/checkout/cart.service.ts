@@ -18,9 +18,9 @@ export class CartService {
     async create(createCartDto: CreateCartDto) {
         const cart = new this.cartModel();
 
-        if(createCartDto.userId) {
-            cart.userId = createCartDto.userId;
-            const existingCart = await this.getCartByUserId(createCartDto.userId);
+        if(createCartDto.id) {
+            cart.userId = createCartDto.id;
+            const existingCart = await this.getCartByUserId(createCartDto.id);
             if(existingCart) {
                 this.delete(existingCart._id);
             }
