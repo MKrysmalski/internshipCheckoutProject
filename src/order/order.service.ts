@@ -35,7 +35,8 @@ export class OrderService {
             email, 
             authorized, 
             userId, 
-            costs, 
+            costs,
+            coupon, 
             items,
             billingCountryCode,
             billingStreet,
@@ -99,7 +100,18 @@ export class OrderService {
         order.email = email;
         order.authorized = authorized;
         order.status = "CREATED";
-        order.costs = costs;
+
+        let sumCosts = 0;
+        for(const item of items){
+            item.costs = item.costs - item.costs * coupon;
+            sumCosts = sumCosts + item.costs;
+        }
+        if (costs == null) {
+            order.costs = sumCosts;
+        } else {
+            order.costs = costs;
+        }
+
         order.items = items;
         order.shippingInformation = shippingInformation;
         order.billingInformation = billingInformation;
@@ -150,7 +162,7 @@ export class OrderService {
         } else if (order.billingInformation.paymentMethod == "deal") {
 
             /*
-            email an Versender schicken mit entsprechendem Einkaufswagen
+            Email an Versender schicken mit entsprechendem Einkaufswagen
             */
             const pdf = await this.pdfService.generatePdf(order);
             order.status='WAIT FOR DEAL';
