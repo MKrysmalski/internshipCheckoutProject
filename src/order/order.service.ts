@@ -28,9 +28,7 @@ export class OrderService {
         private pdfService:PdfService
     ) { }
 
-    async createOrder(
-        createOrderDto: CreateOrderDto,
-    ): Promise<OrderCreated> {
+    async createOrder( createOrderDto: CreateOrderDto): Promise<OrderCreated> {
         const{ 
             email, 
             authorized, 
@@ -63,7 +61,7 @@ export class OrderService {
             shippingLastname,
             shippingGender  } = createOrderDto;
 
-            let billingInformation = new BillingInformation (
+            const billingInformation = new BillingInformation (
                 billingCountryCode,
                 billingStreet,
                 billingCity,
@@ -82,7 +80,7 @@ export class OrderService {
                 billingPaymentMethod
             );
 
-            let shippingInformation = new ShippingInformation(
+            const shippingInformation = new ShippingInformation(
                 shippingStreet,
                 shippingCity,
                 shippingPostalCode,
@@ -122,15 +120,17 @@ export class OrderService {
                 Email versenden sobald Besellung erfolgreich.
                 */
                 const paymentResponse = await this.paypalService.createOrder(userId,shippingInformation,billingInformation,order.costs);
+                //const paymentResponse={paymentId:"123",authUrl:"123"};
                 order.paymentId = paymentResponse.paymentId;
                 order.status="WAIT FOR PAYPALAUTHENTICATION";
                 this.logger.verbose(`Order: ${order.orderId} successfully created for user: ${order.userId}`);
+                await order.save();
                 return {
-                    order: await order.save(),
+                    order: order,
                     payment: paymentResponse.authUrl
                 };
             } catch (error) {
-                throw error;
+                this.logger.log("Error: "+error);
             } 
         } else if (order.billingInformation.paymentMethod=="prepaid") {
 
@@ -140,9 +140,9 @@ export class OrderService {
             const pdf = await this.pdfService.generatePdf(order);
             await this.mailService.sendMail(order,pdf);
             order.status='WAIT FOR PAYMENT';
-
+            await order.save()
             return { 
-                order: await order.save(),
+                order: order,
                 payment:`Email send to ${ order.billingInformation.email }: ${order.status}`
             }
 
@@ -152,14 +152,15 @@ export class OrderService {
             Email verenden mit Bankdaten und Bestellung
             */
             const pdf = await this.pdfService.generatePdf(order);
-            await this.mailService.sendMail(order,pdf);
+            this.mailService.sendMail(order,pdf);
             order.status='WAIT FOR PAYMENT';
+            await order.save();
             return {
-                order: await order.save(),
+                order: order,
                 payment: `Email send to ${ order.billingInformation.email }: ${ order.status }`
             }
 
-        } else if (order.billingInformation.paymentMethod == "deal") {
+        } else if (order.billingInformation.paymentMethod == "deal") {//quote
 
             /*
             Email an Versender schicken mit entsprechendem Einkaufswagen
@@ -167,8 +168,9 @@ export class OrderService {
             const pdf = await this.pdfService.generatePdf(order);
             order.status='WAIT FOR DEAL';
             await this.mailService.sendMail(order,pdf);
+            await order.save();
             return {
-                order: await order.save(),
+                order: order,
                 payment: `Email send to ${ order.billingInformation.email }: ${ order.status }`
             }
         } else {
@@ -215,9 +217,10 @@ export class OrderService {
         
         try {
             this.logger.verbose(`update orderstatus with orderid ${updateOrder.orderId} to ${updateOrder.orderStatus}`);
-            let order =  await this.orderModel.findOne({orderId:updateOrder.orderId});
+            const order =  await this.orderModel.findOneAndUpdate({orderId:updateOrder.orderId},{status:updateOrder.orderStatus});
             order.status = updateOrder.orderStatus;
-            return await order.save();
+            //
+            return order;
         } catch(error) {
             this.logger.error(error.stack);
             throw error;
@@ -228,7 +231,7 @@ export class OrderService {
         
         try {
             this.logger.verbose(`delete order with orderid ${id}`);
-            await this.orderModel.deleteOne({orderId:id}).exec();
+            await this.orderModel.deleteOne({orderId:id});
         } catch(error) {
             this.logger.error(error.stack);
             throw error;
@@ -257,17 +260,17 @@ export class OrderService {
         }
     }
 
-    async handleCallback(callbackDto: CallbackDto) {
+    async handleCallback(callbackDto: CallbackDto): Promise<Order> {
         
-        let { success, token, PayerID } = callbackDto;
+        const { success, token, PayerID } = callbackDto;
         let order = undefined;
         this.logger.verbose(`callback received with id ${ PayerID }`);
         try{
-            order = await this.orderModel.findOne({ paymentId: token });
+            order = await this.orderModel.findOneAndUpdate({ paymentId: token },{authorized:success,payerId:PayerID,status:"INPROGRESS"});
             order.authorized = success;
             order.payerId = PayerID;
             order.status = "INPROGRESS";
-            await order.save();
+            await order;
         } catch(error) {
             this.logger.error(error.stack);
             throw error;
@@ -275,13 +278,14 @@ export class OrderService {
 
         if(order.authorized) {
             try {
+                this.orderModel.findOneAndUpdate({ paymentId: token },{status:"PAYED"})
                 order.status="PAYED";
                 this.logger.verbose(`Order: ${order.orderId} successfully authorized for user: ${order.userId}`);
 
                 const pdf = await this.pdfService.generatePdf(order);
 
                 const response = await Promise.all([
-                    order.save(),
+                    await order,
                     this.mailService.sendMail(order,pdf),
                 ]);
 

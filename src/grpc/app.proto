@@ -104,7 +104,7 @@ message CreateOrder {
     string billingBrandName = 26;
     repeated Item items = 27;
     string billingCompany = 28;
-    string billingGender = 39;
+    string billingGender = 29;
     string shippingGender = 30;
 }
 message Orders {

@@ -1,8 +1,5 @@
 import { PaymentMethod, BillingBrandName, Gender } from './../order.enum';
-import { Item } from './../../checkout/types/item.type';
-import { BillingInformation } from './../types/billing-information.type';
-import { ShippingInformation } from './../types/shipping-information.type';
-import { IsArray, IsBoolean, IsCurrency, IsDecimal, IsEmail, IsEnum, isNotEmpty, IsNotEmpty, IsOptional, IsPostalCode, IsString } from 'class-validator'
+import { IsArray, IsBoolean, IsCurrency, IsDecimal, IsEmail, IsEnum, IsNotEmpty, IsOptional, IsPostalCode, IsString } from 'class-validator'
 export class CreateOrderDto {
 
     @IsEmail()
@@ -23,7 +20,6 @@ export class CreateOrderDto {
 
     @IsOptional()
     @IsDecimal()
-    @IsString()
     coupon: number;
 
     @IsOptional()
@@ -31,7 +27,8 @@ export class CreateOrderDto {
     items: { 
         referencedId:string, 
         quantity:number, 
-        costs:number }[];
+        costs:number 
+    }[];
 
     //SHIPPING
 
@@ -41,7 +38,7 @@ export class CreateOrderDto {
     
     @IsNotEmpty()
     @IsString()
-    shippingCity: string;
+    shippingCity: string
     
     @IsNotEmpty()
     @IsPostalCode()
@@ -81,7 +78,7 @@ export class CreateOrderDto {
     billingCity: string;
 
     @IsNotEmpty()
-    billingCountry: string
+    billingCountry: string;
 
     @IsNotEmpty()
     @IsPostalCode()

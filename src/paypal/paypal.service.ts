@@ -1,8 +1,8 @@
 import { OrderPaymentResponse } from './../order/order.payment.response';
 import { BillingInformation } from './../order/types/billing-information.type';
 import { ShippingInformation } from './../order/types/shipping-information.type';
-import { Injectable, Body, BadRequestException, NotFoundException, InternalServerErrorException } from '@nestjs/common';
-import axios,{ AxiosPromise,AxiosRequestConfig }from 'axios';
+import { Injectable } from '@nestjs/common';
+import axios from 'axios';
 import { Logger } from '@nestjs/common';
 
 @Injectable()
@@ -25,7 +25,7 @@ export class PaypalService {
 
     private async createBearer( userId:string, userSecret:string ) {
         
-        let response = await axios({
+        const response = await axios({
             url: 'https://api.sandbox.paypal.com/v1/oauth2/token',
             method: 'POST',
             withCredentials: true,
@@ -54,7 +54,7 @@ export class PaypalService {
 
     async orderDetails(id: string) {
         try {
-            let response=await axios({
+            const response=await axios({
                 method: 'GET',
                 url: 'https://api.sandbox.paypal.com/v2/checkout/orders/'+id,
                 headers: {
@@ -82,11 +82,16 @@ export class PaypalService {
         costs: number
     ):Promise<OrderPaymentResponse> {
         
+        console.log(userId);
+        console.log(shippingInformation);
+        console.log(billingInformation);
+        console.log(costs);
         if(this.tokenExpired()) {
             this.createBearer(userId, this.userSecret);
         }
+        console.log(this.token);
         
-        let response = await axios({
+        const response = await axios({
             method: 'POST',
             url: 'https://api.sandbox.paypal.com/v2/checkout/orders',
             headers: {

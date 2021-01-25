@@ -1,8 +1,9 @@
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import { OrderDocument } from './../order/order.schema';
-import { Injectable, Controller, InternalServerErrorException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import {MailerService} from "@nestjs-modules/mailer";
 import { TwingEnvironment, TwingLoaderFilesystem } from 'twing';
-import { MailConfig } from 'config/example.mailer.config'
+import { MailConfig } from './../../config/example.mailer.config'
 import { Logger } from '@nestjs/common';
 
 @Injectable()
@@ -14,10 +15,8 @@ export class MailService {
                 new TwingLoaderFilesystem(MailConfig.templatePath))
         }
 
-    async sendMail(data: OrderDocument, pdf: any):Promise<void>{
-        
+    async sendMail(data: OrderDocument, pdf: any):Promise<void> {
         let mailAddr=undefined;
-
         if (data.billingInformation.paymentMethod == "prepaid") {
             mailAddr = data.billingInformation.email;//Bei Vorkasse: Email an Kunde mit BankDaten von Wago/Murtfeldt
 
@@ -40,19 +39,21 @@ export class MailService {
         } else {
             return null;
         }
-        console.log(data.billingInformation.billingBrandName + '/' + data.billingInformation.paymentMethod + '.twig');
-        let template = await this.twing.load(data.billingInformation.billingBrandName + '/' + data.billingInformation.paymentMethod + '.twig');
+        const template = await this.twing.load(data.billingInformation.billingBrandName + '/' + data.billingInformation.paymentMethod + '.twig');
 
-        let html = await template.render(data);
-
-        let result = await this.mailerService.sendMail( {
-            to: 'mk@7pkonzepte.de',//mailAddr
-            from: 'ping@7pkonzepte.de',
-            subject: `Email: ${data.billingInformation.billingBrandName}`,
-            html:html,
-            attachments:[{contentType:"application/pdf",filename:"Rechnung.pdf",content:pdf}]
-        });
-            
-        this.logger.verbose(result); 
+        const html = await template.render(data);
+        
+        try {
+            const result = await this.mailerService.sendMail( {
+                to: 'mk@7pkonzepte.de',//mailAddr
+                from: 'ping@7pkonzepte.de',
+                subject: `Email: ${data.billingInformation.billingBrandName}`,
+                html:html,
+                attachments:[{contentType:"application/pdf",filename:"Rechnung.pdf",content:pdf}]
+            });
+            this.logger.verbose(result);
+        } catch(error) {
+            this.logger.log('Error: '+error);
+        } 
     }
 }

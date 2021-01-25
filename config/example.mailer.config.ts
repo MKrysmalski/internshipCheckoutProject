@@ -1,9 +1,10 @@
-let MailConfig = {
+const MailConfig = {
     connection: {
         host: 'w01553e9.kasserver.com',
             port: 465,
         tls: {
             ciphers: 'SSLv3',
+            rejectUnauthorized: false,
         },
         secure: true, // true for 465, false for other ports
         auth: {
@@ -11,7 +12,7 @@ let MailConfig = {
             pass: 'JDZu-fdGUacP.r8xwG',
         },
     },
-    templatePath: '/home/michael/projects/grpc/Checkout/src/mail/templates'
+    templatePath: 'C:/Users/Michael Krysmalski/projects/Checkout/src/mail/templates'
 }
 
 export { MailConfig }

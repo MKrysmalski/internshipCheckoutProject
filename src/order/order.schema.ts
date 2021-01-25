@@ -1,4 +1,3 @@
-import { Item } from './../checkout/types/item.type';
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { v4 as uuid } from 'uuid';
 import { BillingInformation } from "./types/billing-information.type";

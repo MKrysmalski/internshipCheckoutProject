@@ -1,5 +1,5 @@
 import { AddItem } from './../grpc/grpc.interface';
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { UpdateItemDto } from './dto/update-item.dto';
 import { DeleteItemDto } from './dto/delete-item.dto';
 import { Cart, CartDocument } from './cart.schema';
@@ -29,8 +29,18 @@ export class CartService {
         return cart.save();
     }
 
-    getCartById(id: uuid) : Promise<Cart> {
-        return this.cartModel.findById(id).exec();
+    async getCartById(id: uuid) : Promise<Cart> {
+        try {      
+            const cart = await this.cartModel.findById(id).exec();
+            if(cart != null) {
+                return cart;
+            } else {
+                return null;
+            }
+        } catch(error) {
+            console.log(error);
+        }
+        
     }
     
     getCartByUserId(userId: uuid) : Promise<Cart> {
@@ -42,7 +52,12 @@ export class CartService {
     }
 
     delete(id: uuid) {
-        this.cartModel.deleteOne({ _id: id }).exec();
+        try {
+            this.cartModel.deleteOne({ _id: id }).exec();
+            return {deleted: true, message: `Cart: ${id} deleted`}
+        } catch(error) {
+            return { deleted: false, message: error.message}
+        } 
     }
 
     async addItem(id: uuid, addItem: AddItem) {
@@ -74,10 +89,10 @@ export class CartService {
 
     async updateItem(id: uuid, updateItemDto: UpdateItemDto) : Promise<Cart> {
         const cart = await this.getCartById(id);
-        let items = cart.items; 
+        const items = cart.items; 
 
-        for(var updateItem of updateItemDto.items) {
-            let index = items.findIndex(element => element.referencedId === updateItem.referencedId)
+        for(const updateItem of updateItemDto.items) {
+            const index = items.findIndex(element => element.referencedId === updateItem.referencedId)
             items[index] = updateItem;
         }
 
@@ -87,9 +102,6 @@ export class CartService {
     async deleteItem(id: uuid, deleteItemDto: DeleteItemDto) : Promise<Cart> {
         let items = (await this.getCartById(id)).items;
         items = items.filter(item => !(deleteItemDto.ids.indexOf(item.referencedId) > -1));
-        
-        console.log(items);
-
         return this.cartModel.updateOne({ _id: id }, { items: items }).exec();
     }
 }

@@ -1,15 +1,12 @@
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import { DeleteOrderDto } from './dto/delete-order.dto';
 import { GetOrderStatusDto } from './dto/get-order-by-status.dto';
 import { GetOrderByIdDto } from './dto/get-order-by-id.dto';
 import { CallbackDto } from './dto/callback.dto';
-import { OrderCreated } from '../order/orderCreated';
-import { ShippingInformationDto } from './dto/shipping-information.dto';
-import { BillingInformationDto } from './dto/billing-information.dto';
 import { GetUserOrdersDto } from './dto/get-UserOrders.dto';
-import { Order } from './order.schema';
 import { UpdateOrderStatusDto } from './dto/update-orderStatus.dto';
 import { CreateOrderDto } from './dto/create-order.dto';
-import { Body, Controller, Delete, Get, Param, Patch, Post, ValidationPipe, Res, Query } from '@nestjs/common';
+import { Controller } from '@nestjs/common';
 import { OrderService } from './order.service';
 import { Logger } from '@nestjs/common';
 import { GrpcMethod } from '@nestjs/microservices';
@@ -25,9 +22,11 @@ export class OrderController {
     async createOrder(
         createOrderDto: CreateOrderDto,
     ) {
+        //console.log(createOrderDto);
         const result = await this.orderService.createOrder(createOrderDto);
-        console.log(result.order);
+        console.log(result);
         return result;
+        return {};
     }
 
     @GrpcMethod('AppController','GetAllOrders')

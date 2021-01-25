@@ -1,5 +1,5 @@
 import { OrderDocument } from './../order/order.schema';
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { TwingEnvironment, TwingLoaderFilesystem } from 'twing';
 import * as puppeteer from 'puppeteer';
 import { PdfConfig } from '../../config/example.pdf.config'
@@ -20,16 +20,16 @@ export class PdfService {
     async generatePdf(order: OrderDocument) : Promise<Buffer> {
         
         
-        let template = await this.twing.load(order.billingInformation.billingBrandName+ '/' + order.billingInformation.paymentMethod + '.twig');
+        const template = await this.twing.load(order.billingInformation.billingBrandName+ '/' + order.billingInformation.paymentMethod + '.twig');
         
-        let html = await template.render(order);
+        const html = await template.render(order);
         
-        let browser = await puppeteer.launch();
+        const browser = await puppeteer.launch();
         
-        let page = await browser.newPage();
+        const page = await browser.newPage();
         await page.setContent(html);
         
-        let pdf = await page.pdf({ path: 'invoice.pdf', format: 'A4' });
+        const pdf = await page.pdf({ path: 'invoice.pdf', format: 'A4' });
         await browser.close();
 
         this.logger.verbose(`pdf successfully created`);

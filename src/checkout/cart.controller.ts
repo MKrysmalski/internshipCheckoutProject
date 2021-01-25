@@ -1,7 +1,8 @@
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
+
 import { UserId, AddItem } from './../grpc/grpc.interface';
-import { Body, Controller, Delete, Get, Param, ParseUUIDPipe, Patch, Post, Query, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, ValidationPipe } from '@nestjs/common';
 import { CartService } from './cart.service';
-import { AddItemDto } from './dto/add-item.dto';
 import { DeleteItemDto } from './dto/delete-item.dto';
 import { CreateCartDto } from './dto/create-cart.dto';
 import { UpdateItemDto } from './dto/update-item.dto';
@@ -13,7 +14,6 @@ export class CartController {
 
     @GrpcMethod('AppController', 'CreateCart')
     createCart(@Body(ValidationPipe) createCartDto: CreateCartDto ) {
-        console.log(createCartDto.id);
         return this.cartService.create(createCartDto);
     }
 
@@ -29,13 +29,12 @@ export class CartController {
 
     @GrpcMethod('AppController', 'DeleteCartById')
     deleteCart(cartid: CartId) {
-        console.log(cartid.id);
         this.cartService.delete(cartid.id);
         return {};
     }
 
     @GrpcMethod('AppController','AddItem')
-    async addItem(addItem:AddItem) {
+    addItem(addItem:AddItem) {
         return this.cartService.addItem(addItem.id, addItem);
     }
 
