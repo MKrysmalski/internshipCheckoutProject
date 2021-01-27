@@ -64,13 +64,13 @@ describe('CartService', () => {
                     provide: getModelToken('Cart'),
                     useValue: {
                         new: jest.fn().mockResolvedValue(mockCart),
-                        findById: jest.fn(),
+                         findById: jest.fn(),
                         findOne: jest.fn(),
                         update: jest.fn(),
                         updateOne: jest.fn(),
                         exec:jest.fn(),
                         create: jest.fn(),
-                        delete: jest.fn(),
+                        deleteOne: jest.fn(),
                         addItem: jest.fn(),
                         getCartById: jest.fn(),
                     }
@@ -82,15 +82,16 @@ describe('CartService', () => {
         model = module.get<Model<CartDocument,CartDocument>>(getModelToken('Cart'));
     });
 
-    it('should be defined', () => {//
+    it('should be defined', () => {
         expect(service).toBeDefined();
+        expect(model).toBeDefined();
     });
 
     afterEach(() => {
         jest.clearAllMocks();
     });
 
-    it('create a Cart', async () => {
+    it('create a Cart', async () => {//
         jest.spyOn(service,'create').mockReturnValue({
             id: "1209fef5-e7f9-4375-ba03-e36e1d6d942b",
             userId: "1209fef5-e7f9-4375-ba03-e36e1d6d942b"
@@ -102,7 +103,7 @@ describe('CartService', () => {
         })   
     });
 
-    it('should return cart by id', async () => {//
+    it('should return cart by id', async () => {
         jest.spyOn(model,'findById').mockReturnValue(
             createMock<Query<CartDocument>>({
                 exec: jest
@@ -126,7 +127,7 @@ describe('CartService', () => {
 
     });
 
-    it('should return cart by userId', async () => {//
+    it('should return cart by userId', async () => {
         jest.spyOn(model,'findOne').mockReturnValue(
             createMock<Query<CartDocument>>({
                 exec: jest
@@ -147,7 +148,7 @@ describe('CartService', () => {
         expect(foundCart).toEqual(findMockCart);
     });
 
-    it('should set User to Cart', async () => {//
+    it('should set User to Cart', async () => {
         jest.spyOn(model,'update').mockReturnValue(
             createMock<Query<CartDocument>>({
                 exec: jest
@@ -168,11 +169,14 @@ describe('CartService', () => {
     });
 
     it('delete Cart', async ()=> {
-        jest.spyOn(service,'delete').mockReturnValue({deleted: true,message: 'Cart: 1209fef5-e7f9-4375-ba03-e36e1d6d942b deleted'})
-        expect(await service.delete('1209fef5-e7f9-4375-ba03-e36e1d6d942b')).toEqual({deleted: true, message: 'Cart: 1209fef5-e7f9-4375-ba03-e36e1d6d942b deleted'});
+        jest.spyOn(model,"deleteOne").mockReturnValue(
+            { } as any
+        )
+        service.delete("45b14e4b-004a-4388-99bf-6cbe95596617");
+        expect(model.deleteOne).toHaveBeenCalled();
     });
 
-    it('add Item to Cart', async () => {//
+    it('add Item to Cart', async () => {
         jest.spyOn(service,'getCartById').mockReturnValue(mockCart('1209fef5-e7f9-4375-ba03-e36e1d6d942b','81a02834-7528-4242-bfbc-cb3c6f2b8cf7',[{referencedId:"1",quantity:2}],date,date) as any);
         jest.spyOn(model,'updateOne').mockReturnValue(
             createMock<Query<CartDocument>>({
@@ -200,7 +204,7 @@ describe('CartService', () => {
 
     });
 
-    it('update Item', async () => {//
+    it('update Item', async () => {
         jest.spyOn(service,'getCartById').mockReturnValue(mockCart('1209fef5-e7f9-4375-ba03-e36e1d6d942b','81a02834-7528-4242-bfbc-cb3c6f2b8cf7',[{referencedId:"",quantity:2}],date,date) as any)
         jest.spyOn(model,'updateOne').mockReturnValue(
             createMock<Query<CartDocument>>({
@@ -233,7 +237,7 @@ describe('CartService', () => {
         });
     });
 
-    it('delete Item', async () => {//
+    it('delete Item', async () => {
         jest.spyOn(service,'getCartById').mockResolvedValue({
             _id: '1209fef5-e7f9-4375-ba03-e36e1d6d942b',
             userId: '81a02834-7528-4242-bfbc-cb3c6f2b8cf7', 
@@ -262,7 +266,8 @@ describe('CartService', () => {
             userId: '81a02834-7528-4242-bfbc-cb3c6f2b8cf7', 
             items: [],
             createdAt: date, 
-            updatedAt: date}
+            updatedAt: date
+        }
         expect(result).toEqual(awaitedResult);
     })
 });

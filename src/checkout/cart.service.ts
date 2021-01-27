@@ -51,12 +51,11 @@ export class CartService {
         return this.cartModel.update({ _id: cartId }, { userId });
     }
 
-    delete(id: uuid) {
+    async delete(id: uuid) {
         try {
-            this.cartModel.deleteOne({ _id: id }).exec();
-            return {deleted: true, message: `Cart: ${id} deleted`}
+            await this.cartModel.deleteOne({ _id: id });
         } catch(error) {
-            return { deleted: false, message: error.message}
+            console.log(error);
         } 
     }
 

@@ -178,24 +178,24 @@ export class OrderService {
         }
     }
 
-    getOrderById(id:string) : Promise<Order> {
+    async getOrderById(id:string) : Promise<Order> {
         
         try {
             this.logger.verbose(`get order with id ${id}`);
-            return this.orderModel.findOne({orderId:id}).exec();
+            return this.orderModel.findOne({orderId:id})
         } catch(error) {
             this.logger.error(error.stack);
             throw error;
         }
     }
     
-    getUserOrders(getUserOrderDto: GetUserOrdersDto) : Promise<Order[]> {
+    async getUserOrders(getUserOrderDto: GetUserOrdersDto) : Promise<Order[]> {
         
         const { id } = getUserOrderDto;
     
         try{
             this.logger.verbose(`get user orders with userid ${id}`);
-            return this.orderModel.find().where("userId",id).exec();
+            return await this.orderModel.find({userId:id});
         } catch(error) {
             this.logger.error(error.stack);
             throw error;
@@ -249,11 +249,11 @@ export class OrderService {
         }
     }
 
-    getAllOrders() : Promise<Order[]> {
+    async getAllOrders() : Promise<Order[]> {
         
         try {
             this.logger.verbose(`get all orders`);
-            return this.orderModel.find().exec();
+            return await this.orderModel.find();
         } catch(error) {
             this.logger.error(error.stack);
             throw error;

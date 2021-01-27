@@ -235,7 +235,7 @@ describe('OrderService', () => {
         model =  module.get<Model<OrderDocument,OrderDocument>>(getModelToken('Order'));
         
     });
-    it('should be defined', () => {//
+    it('should be defined', () => {
         expect(service).toBeDefined();
         expect(paypal).toBeDefined();
         expect(pdf).toBeDefined();
@@ -243,7 +243,7 @@ describe('OrderService', () => {
         expect(model).toBeDefined();
     });
 
-    it('create a Order', async () => {
+    it('create a Order', async () => {//
         jest.spyOn(service,'createOrder').mockReturnValue(
             createdOrder as any);
 
@@ -251,28 +251,20 @@ describe('OrderService', () => {
     });
 
     it('get Order by Id', async () => {
-        jest.spyOn(model,'findOne').mockReturnValue(
-            createMock<Query<OrderDocument>>({
-                exec:jest
-                .fn()
-                .mockReturnValue(
-                    createdOrder
-                )
-            })
-        );
-        expect(service.getOrderById("0b8f088b-c26a-44a0-8406-1544d242cbb9")).toEqual(createdOrder);
+        jest.spyOn(model,'findOne').mockReturnValue(createdOrder as any);
+        expect(await service.getOrderById("0b8f088b-c26a-44a0-8406-1544d242cbb9")).toEqual(createdOrder);
     })
 
     it('get user orders', async () => {   
-        jest.spyOn(service,'getUserOrders').mockReturnValue([createdOrder,createdOrder] as any);
-        expect(service.getUserOrders({id:"65f8f3e8-5817-4452-9dd8-7b562a85b88f"})).toEqual([createdOrder,createdOrder]);
+        jest.spyOn(model,'find').mockReturnValue([createdOrder,createdOrder] as any);
+        expect(await service.getUserOrders({id:"65f8f3e8-5817-4452-9dd8-7b562a85b88f"})).toEqual([createdOrder,createdOrder]);
     })
 
     it('get Order Authorization', async () => {
         jest.spyOn(service,'getOrderById').mockResolvedValue(
             orderMock as any
         )
-        expect(await service.getOrderAuthorization("")).toEqual(true);
+        expect(await service.getOrderAuthorization("0db25cd6-fca1-47cf-abcd-85d6c894ee42")).toEqual(true);
     })
 
     it('update Order status', async () => {
@@ -280,14 +272,14 @@ describe('OrderService', () => {
             orderMock as any
         )
         
-        expect(await service.updateOrderStatus({orderId:"", orderStatus:"DONE"})).toEqual(orderMock);
+        expect(await service.updateOrderStatus({orderId:"0db25cd6-fca1-47cf-abcd-85d6c894ee42", orderStatus:"DONE"})).toEqual(orderMock);
     })
 
     it('delete Order', async () => {
         jest.spyOn(model,"deleteOne").mockReturnValue(
             { } as any
         )
-        service.deleteOrder("");
+        service.deleteOrder("0db25cd6-fca1-47cf-abcd-85d6c894ee42");
         expect(model.deleteOne).toHaveBeenCalled();
     })
 
@@ -300,10 +292,10 @@ describe('OrderService', () => {
     })
 
     it('get all Orders', async () => {
-        jest.spyOn(service,"getAllOrders").mockReturnValue(
+        jest.spyOn(model,"find").mockReturnValue(
             createdOrder as any
         )
-        expect(service.getAllOrders()).toEqual(createdOrder);
+        expect(await service.getAllOrders()).toEqual(createdOrder);
     })
 
     it('handle Callback', async () => {

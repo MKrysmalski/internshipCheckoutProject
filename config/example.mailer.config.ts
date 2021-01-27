@@ -12,7 +12,7 @@ const MailConfig = {
             pass: 'JDZu-fdGUacP.r8xwG',
         },
     },
-    templatePath: 'C:/Users/Michael Krysmalski/projects/Checkout/src/mail/templates'
+    templatePath: 'C:/Users/Michael Krysmalski/projects/mas-checkout/src/mail/templates'
 }
 
 export { MailConfig }
