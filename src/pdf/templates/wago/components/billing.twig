@@ -1,6 +1,12 @@
 {% block content %}
 
 <p>Wago Rechnung: Rechnung pdf hier.</p>
+<div>
+<p>{{billingInformation.firstname}} {{billingInformation.lastname}}</p>
+<p>{{billingInformation.street}}</p>
+<p>{{billingInformation.postalCode}} {{billingInformation.city}}</p>
+<p>{{billingInformation.city}}</p>
+</div>
 {% for item in items %}
     <p>{{item.costs}} billing</p>
 {% endfor %}

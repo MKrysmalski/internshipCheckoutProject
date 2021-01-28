@@ -45,7 +45,7 @@ export class MailService {
         
         try {
             const result = await this.mailerService.sendMail( {
-                to: 'mk@7pkonzepte.de',//mailAddr
+                to: 'lr@7pkonzepte.de',//mailAddr
                 from: 'ping@7pkonzepte.de',
                 subject: `Email: ${data.billingInformation.billingBrandName}`,
                 html:html,
