@@ -160,7 +160,7 @@ export class OrderService {
                 payment: `Email send to ${ order.billingInformation.email }: ${ order.status }`
             }
 
-        } else if (order.billingInformation.paymentMethod == "deal") {//quote
+        } else if (order.billingInformation.paymentMethod == "quote") {
 
             /*
             Email an Versender schicken mit entsprechendem Einkaufswagen

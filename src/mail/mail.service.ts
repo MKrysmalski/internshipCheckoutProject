@@ -26,7 +26,7 @@ export class MailService {
         } else if (data.billingInformation.paymentMethod == "paypal" ) {
             mailAddr = data.billingInformation.email;//Bei Paypal: Bestellbestätigung mit Rechnung bei erfolgreicher Zahlung
 
-        } else if (data.billingInformation.paymentMethod == "deal") {//Bei Angebot: Email an Wago/Murtfeldt mit der jeweiligen Bestellung
+        } else if (data.billingInformation.paymentMethod == "quote") {//Bei Angebot: Email an Wago/Murtfeldt mit der jeweiligen Bestellung
             if (data.billingInformation.billingBrandName=="wago") {
                 mailAddr = "wago@email.de";
 
