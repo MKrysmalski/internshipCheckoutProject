@@ -73,6 +73,7 @@ describe('CartService', () => {
                         deleteOne: jest.fn(),
                         addItem: jest.fn(),
                         getCartById: jest.fn(),
+                        findByIdAndUpdate: jest.fn()
                     }
                 }
             ]
@@ -105,20 +106,13 @@ describe('CartService', () => {
 
     it('should return cart by id', async () => {
         jest.spyOn(model,'findById').mockReturnValue(
-            createMock<Query<CartDocument>>({
-                exec: jest
-                .fn()
-                .mockResolvedValue(
-                    mockCartDoc({
-                        _id: '1209fef5-e7f9-4375-ba03-e36e1d6d942b',
-                        userId: '81a02834-7528-4242-bfbc-cb3c6f2b8cf7', 
-                        items: [{referencedId:'b3e57bfe-9def-47f7-a009-d76ec34c1faf',quantity:4}],
-                        createdAt: date, 
-                        updatedAt: date
-                    })
-                )
-
-            })
+            mockCartDoc({
+                _id: '1209fef5-e7f9-4375-ba03-e36e1d6d942b',
+                userId: '81a02834-7528-4242-bfbc-cb3c6f2b8cf7', 
+                items: [{referencedId:'b3e57bfe-9def-47f7-a009-d76ec34c1faf',quantity:4}],
+                createdAt: date, 
+                updatedAt: date
+            }) as any
         );
         const findMockCart = mockCart('1209fef5-e7f9-4375-ba03-e36e1d6d942b','81a02834-7528-4242-bfbc-cb3c6f2b8cf7',[{referencedId:'b3e57bfe-9def-47f7-a009-d76ec34c1faf',quantity:4}],date,date);
         const foundCart = await service.getCartById('1209fef5-e7f9-4375-ba03-e36e1d6d942b');
@@ -129,19 +123,13 @@ describe('CartService', () => {
 
     it('should return cart by userId', async () => {
         jest.spyOn(model,'findOne').mockReturnValue(
-            createMock<Query<CartDocument>>({
-                exec: jest
-                .fn()
-                .mockResolvedValue(
-                    mockCartDoc({
-                        _id: '1209fef5-e7f9-4375-ba03-e36e1d6d942b',
-                        userId: '81a02834-7528-4242-bfbc-cb3c6f2b8cf7', 
-                        items: [{referencedId:'b3e57bfe-9def-47f7-a009-d76ec34c1faf',quantity:4}],
-                        createdAt: date, 
-                        updatedAt: date
-                    })
-                )
-            })
+            mockCartDoc({
+                _id: '1209fef5-e7f9-4375-ba03-e36e1d6d942b',
+                userId: '81a02834-7528-4242-bfbc-cb3c6f2b8cf7', 
+                items: [{referencedId:'b3e57bfe-9def-47f7-a009-d76ec34c1faf',quantity:4}],
+                createdAt: date, 
+                updatedAt: date
+            }) as any 
         )
         const findMockCart = mockCart('1209fef5-e7f9-4375-ba03-e36e1d6d942b','81a02834-7528-4242-bfbc-cb3c6f2b8cf7',[{referencedId:'b3e57bfe-9def-47f7-a009-d76ec34c1faf',quantity:4}],date,date);
         const foundCart = await service.getCartByUserId('81a02834-7528-4242-bfbc-cb3c6f2b8cf7');
@@ -149,23 +137,10 @@ describe('CartService', () => {
     });
 
     it('should set User to Cart', async () => {
-        jest.spyOn(model,'update').mockReturnValue(
-            createMock<Query<CartDocument>>({
-                exec: jest
-                .fn()
-                .mockResolvedValue(
-                    mockCartDoc({
-                        _id: '1209fef5-e7f9-4375-ba03-e36e1d6d942b',
-                        userId: '81a02834-7528-4242-bfbc-cb3c6f2b8cf7', 
-                        items: [{referencedId:'b3e57bfe-9def-47f7-a009-d76ec34c1faf',quantity:4}],
-                        createdAt: date, 
-                        updatedAt: date
-                    })
-                )
-            })
+        jest.spyOn(model,'findByIdAndUpdate').mockReturnValue(
+            {"_id": "1209fef5-e7f9-4375-ba03-e36e1d6d942b", "createdAt": date, "items": [{"quantity": 4, "referencedId": "b3e57bfe-9def-47f7-a009-d76ec34c1faf"}], "updatedAt": date, "userId": "81a02834-7528-4242-bfbc-cb3c6f2b8cf7"} as any
         )
-        service.setUserToCart('1209fef5-e7f9-4375-ba03-e36e1d6d942b','81a02834-7528-4242-bfbc-cb3c6f2b8cf7')
-        expect(model.update).toHaveBeenCalled();
+        expect(await service.setUserToCart('1209fef5-e7f9-4375-ba03-e36e1d6d942b','81a02834-7528-4242-bfbc-cb3c6f2b8cf7')).toEqual({"_id": "1209fef5-e7f9-4375-ba03-e36e1d6d942b", "createdAt": date, "items": [{"quantity": 4, "referencedId": "b3e57bfe-9def-47f7-a009-d76ec34c1faf"}], "updatedAt": date, "userId": "81a02834-7528-4242-bfbc-cb3c6f2b8cf7"});
     });
 
     it('delete Cart', async ()=> {
@@ -177,23 +152,17 @@ describe('CartService', () => {
     });
 
     it('add Item to Cart', async () => {
-        jest.spyOn(service,'getCartById').mockReturnValue(mockCart('1209fef5-e7f9-4375-ba03-e36e1d6d942b','81a02834-7528-4242-bfbc-cb3c6f2b8cf7',[{referencedId:"1",quantity:2}],date,date) as any);
+        jest.spyOn(service,'getCartById').mockReturnValue(mockCart('1209fef5-e7f9-4375-ba03-e36e1d6d942b','81a02834-7528-4242-bfbc-cb3c6f2b8cf7',[{referencedId:"b3e57bfe-9def-47f7-a009-d76ec34c1faf",quantity:2}],date,date) as any);
         jest.spyOn(model,'updateOne').mockReturnValue(
-            createMock<Query<CartDocument>>({
-                exec: jest
-                .fn()
-                .mockResolvedValue(
-                    mockCartDoc({
-                        _id: '1209fef5-e7f9-4375-ba03-e36e1d6d942b',
-                        userId: '81a02834-7528-4242-bfbc-cb3c6f2b8cf7', 
-                        items: [{referencedId:'b3e57bfe-9def-47f7-a009-d76ec34c1faf',quantity:4}],
-                        createdAt: date, 
-                        updatedAt: date
-                    })
-                )
-            })
+            mockCartDoc({
+                _id: '1209fef5-e7f9-4375-ba03-e36e1d6d942b',
+                userId: '81a02834-7528-4242-bfbc-cb3c6f2b8cf7', 
+                items: [{referencedId:'b3e57bfe-9def-47f7-a009-d76ec34c1faf',quantity:4}],
+                createdAt: date, 
+                updatedAt: date
+            }) as any  
         )
-        const result = await service.addItem('1209fef5-e7f9-4375-ba03-e36e1d6d942b', {id:'1209fef5-e7f9-4375-ba03-e36e1d6d942b',items:[{referencedId:"2",quantity:2}]})
+        const result = await service.addItem('1209fef5-e7f9-4375-ba03-e36e1d6d942b', {id:'1209fef5-e7f9-4375-ba03-e36e1d6d942b',items:[{referencedId:"b3e57bfe-9def-47f7-a009-d76ec34c1faf",quantity:2}]})
         expect(result).toEqual({
             _id: '1209fef5-e7f9-4375-ba03-e36e1d6d942b',
             userId: '81a02834-7528-4242-bfbc-cb3c6f2b8cf7', 
@@ -205,7 +174,7 @@ describe('CartService', () => {
     });
 
     it('update Item', async () => {
-        jest.spyOn(service,'getCartById').mockReturnValue(mockCart('1209fef5-e7f9-4375-ba03-e36e1d6d942b','81a02834-7528-4242-bfbc-cb3c6f2b8cf7',[{referencedId:"",quantity:2}],date,date) as any)
+        jest.spyOn(service,'getCartById').mockReturnValue(mockCart('1209fef5-e7f9-4375-ba03-e36e1d6d942b','1209fef5-e7f9-4375-ba03-e36e1d6d942b',[{referencedId:"1209fef5-e7f9-4375-ba03-e36e1d6d942b",quantity:4}],date,date) as any)
         jest.spyOn(model,'updateOne').mockReturnValue(
             createMock<Query<CartDocument>>({
                 exec: jest

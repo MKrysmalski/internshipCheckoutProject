@@ -6,6 +6,7 @@ service AppController {
     rpc GetCartById(CartId) returns (Cart);
     rpc CreateCart(UserId) returns (Cart);
     rpc GetCartByUser(UserId) returns (Cart);
+    rpc SetUserToCart(UpdateUser) returns (Cart);
     rpc DeleteCartById(CartId) returns (voided);
     rpc AddItem(AddItem) returns (voided);
     rpc UpdateItem(UpdateItem) returns (voided);
@@ -31,6 +32,11 @@ message test {
 
 message CartId {
     string id = 1;
+}
+
+message UpdateUser {
+    string cartId = 1;
+    string userId = 2;
 }
 
 message UserId {

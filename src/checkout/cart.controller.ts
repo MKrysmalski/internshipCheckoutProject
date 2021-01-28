@@ -24,7 +24,12 @@ export class CartController {
 
     @GrpcMethod('AppController', 'GetCartById')
     getCartById(cardId: CartId) {
-        return this.cartService.getCartById(cardId.id);
+        this.cartService.getCartById(cardId.id);
+    }
+
+    @GrpcMethod('AppController', 'SetUserToCart')
+    setUserToCart(id){
+        return this.cartService.setUserToCart(id.cartId,id.userId);
     }
 
     @GrpcMethod('AppController', 'DeleteCartById')
@@ -45,7 +50,6 @@ export class CartController {
 
     @GrpcMethod('AppController','DeleteItem')
     deleteItem(deleteItemDto: DeleteItemDto) {
-        console.log(deleteItemDto);
         return this.cartService.deleteItem(deleteItemDto.id, deleteItemDto);
     }
 }

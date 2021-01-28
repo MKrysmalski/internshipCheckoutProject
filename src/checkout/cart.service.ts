@@ -15,7 +15,7 @@ export class CartService {
         private cartModel: Model<CartDocument>
     ) {}
 
-    async create(createCartDto: CreateCartDto) {
+    async create(createCartDto: CreateCartDto): Promise<Cart> {
         const cart = new this.cartModel();
 
         if(createCartDto.id) {
@@ -30,36 +30,28 @@ export class CartService {
     }
 
     async getCartById(id: uuid) : Promise<Cart> {
-        try {      
-            const cart = await this.cartModel.findById(id).exec();
-            if(cart != null) {
-                return cart;
-            } else {
-                return null;
-            }
-        } catch(error) {
-            console.log(error);
-        }
-        
+            return await this.cartModel.findById({_id:id});  
     }
     
-    getCartByUserId(userId: uuid) : Promise<Cart> {
-        return this.cartModel.findOne({ userId }).exec();
+    async getCartByUserId(userId: uuid) : Promise<Cart> {
+        return await this.cartModel.findOne({ userId });
     }
     
-    setUserToCart(cartId: uuid, userId: uuid) {
-        return this.cartModel.update({ _id: cartId }, { userId });
+    async setUserToCart(cartId: uuid, userId: uuid): Promise<Cart> {
+        const result = await this.cartModel.findByIdAndUpdate({ _id: cartId }, { userId:userId });
+        result.userId=userId;
+        return result;
     }
 
-    async delete(id: uuid) {
-        try {
+    async delete(id: uuid): Promise<void> {
+        try{
             await this.cartModel.deleteOne({ _id: id });
-        } catch(error) {
+        }catch(error){
             console.log(error);
-        } 
+        }     
     }
 
-    async addItem(id: uuid, addItem: AddItem) {
+    async addItem(id: uuid, addItem: AddItem): Promise<Cart> {
         let items = (await this.getCartById(id)).items;
         items = items.concat(addItem.items);
         
@@ -83,7 +75,9 @@ export class CartService {
             }
         }
 
-        return this.cartModel.updateOne({ _id: id }, { items: Array.from(hashMap.values()) }).exec();
+        const result =await this.cartModel.updateOne({ _id: id }, { items: Array.from(hashMap.values()) });
+        result.items=Array.from(hashMap.values());
+        return result;
     }
 
     async updateItem(id: uuid, updateItemDto: UpdateItemDto) : Promise<Cart> {
