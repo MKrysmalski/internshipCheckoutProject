@@ -1,9 +1,16 @@
 {% block content %}
-
-<p>Murtfeldt Rechnung: Rechnung pdf hier.</p>
+<div class="main-content">
 
 {% for item in items %}
-    <p>{{item.costs}} billing</p>
+<div class="item-container">
+    <div>{{loop.index}}</div>
+    <div>Anzahl {{item.quantity}}</div>
+    <div>ID: {{item.referencedId}}</div>
+    <div>{{item.costs}}€</div>
+</div>
 {% endfor %}
-
+<div class="item-container">
+    <div>{{ items|length + 1}}</div>
+</div>
+</div>
 {% endblock content %}
