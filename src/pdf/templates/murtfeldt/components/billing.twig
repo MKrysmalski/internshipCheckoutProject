@@ -2,8 +2,8 @@
 <div class="main-content">
 <div class="item-container" style="border-top: 1px solid black">
     <div style="width: 5%">Pos</div>
-    <div style="width: 10%">Vorschau</div>
-    <div style="width: 50%">Leistung</div>
+    <div style="width: 15%">Vorschau</div>
+    <div style="width: 45%">Leistung</div>
     <div style="width: 10%">MwSt.</div>
     <div style="width: 10%">Anzahl</div>
     <div style="width: 15%">Gesamtkosten</div>
@@ -11,15 +11,20 @@
 {% for item in items %}
 <div class="item-container">
     <div style="width: 5%">{{loop.index}}</div>
-    <div style="width: 10%">Vorschau</div>
-    <div style="width: 50%">ID: {{item.referencedId}}</div>
+    <div style="width: 15%">Vorschau</div>
+    <div style="width: 45%">ID: {{item.referencedId}}</div>
     <div style="width: 10%">19%</div>
     <div style="width: 10%">{{item.quantity}}</div>
     <div style="width: 15%">{{item.costs}} EUR</div>
 </div>
 {% endfor %}
 <div class="item-container">
-    <div>{{ items|length + 1}}</div>
+    <div style="width: 5%">{{ items|length + 1}}</div>
+    <div style="width: 15%"></div>
+    <div style="width: 45%">Verpackung und Versand</div>
+    <div style="width: 10%">19%</div>
+    <div style="width: 10%">1</div>
+    <div style="width: 15%">4.96 EUR</div>
 </div>
 </div>
 {% endblock content %}
