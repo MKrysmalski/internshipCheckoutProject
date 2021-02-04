@@ -1,30 +1,42 @@
 {% block content %}
 <div class="main-content">
-<div class="item-container" style="border-top: 1px solid black">
-    <div style="width: 5%">Pos</div>
-    <div style="width: 15%">Vorschau</div>
-    <div style="width: 45%">Leistung</div>
-    <div style="width: 10%">MwSt.</div>
-    <div style="width: 10%">Anzahl</div>
-    <div style="width: 15%">Gesamtkosten</div>
-</div>
+<div class="item-container-wrapper">
+    <h2>Rechnung</h2>
+    <div class="item-container" style="border-top: 1px solid black">
+        <div style="width: 5%">Pos</div>
+        <div style="width: 15%">Vorschau</div>
+        <div style="width: 45%">Leistung</div>
+        <div style="width: 10%">MwSt.</div>
+        <div style="width: 10%">Anzahl</div>
+        <div style="width: 15%">Gesamtkosten</div>
+    </div>
 {% for item in items %}
-<div class="item-container">
-    <div style="width: 5%">{{loop.index}}</div>
-    <div style="width: 15%">Vorschau</div>
-    <div style="width: 45%">ID: {{item.referencedId}}</div>
-    <div style="width: 10%">19%</div>
-    <div style="width: 10%">{{item.quantity}}</div>
-    <div style="width: 15%">{{item.costs}} EUR</div>
-</div>
+    <div class="item-container">
+        <div style="width: 5%">{{loop.index}}</div>
+        <div style="width: 15%">Vorschau</div>
+        <div style="width: 45%">ID: {{item.referencedId}}</div>
+        <div style="width: 10%">19%</div>
+        <div style="width: 10%">{{item.quantity}}</div>
+        <div style="width: 15%">{{item.costs}} EUR</div>
+    </div>
 {% endfor %}
-<div class="item-container">
-    <div style="width: 5%">{{ items|length + 1}}</div>
-    <div style="width: 15%"></div>
-    <div style="width: 45%">Verpackung und Versand</div>
-    <div style="width: 10%">19%</div>
-    <div style="width: 10%">1</div>
-    <div style="width: 15%">4.96 EUR</div>
+    <div class="item-container">
+        <div style="width: 5%">{{ items|length + 1}}</div>
+        <div style="width: 15%"></div>
+        <div style="width: 45%">Verpackung und Versand</div>
+        <div style="width: 10%">19%</div>
+        <div style="width: 10%">1</div>
+        <div style="width: 15%">4.96 EUR</div>
+    </div>
 </div>
+<div class="billing-finish-container"></div>
+    <div style="display:flex">
+        <div style="flex-grow:1"><br><br><h4>Wir danken Ihnen für Ihren Auftrag!</h4></div>
+        <div style="flex-grow:1">
+            Nettobetrag: <br>
+            MwSt: <br>
+            <h4>Gesamtbetrag:</h4>
+        </div>
+    </div>
 </div>
 {% endblock content %}
