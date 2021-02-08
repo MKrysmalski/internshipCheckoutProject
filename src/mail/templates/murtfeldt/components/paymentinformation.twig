@@ -1,14 +1,19 @@
 {% block content %}
 <tbody>
     <td>
-        <p>Murtfeldt Zahlung auf Rechnung: Hier Murtfeldt Bankdaten.</p>
-        <table>
-            {% for item in items %}
-            <tr>
-                <td>{{item.costs}} billing</td>
-            </tr>
-            {% endfor %}
-        </table>
+        <a>noch einmal vielen Dank für Ihre Bestellung über unser Online Portal (www.murtfeldt-as.de).</a><br>
+        <a>Wir haben uns sehr darüber gefreut!</a><br>
+        <a>Um Ihre Bestellung abzuschließen und den Produktionsprozess damit anzustoßen, überweisen Sie bitte den Betrag {{costs}}€ auf unser Bankkonto bei der Kreissparkasse Tübingen:</a><br><br>
+        <a>Inhaber:          Murtfeldt Additive Solutions</a><br>
+        <a>IBAN:             DE91 6415 0020 0004 4449 85</a><br>
+        <a>BIC:              SOLADES1TUB</a><br>
+        <a>Verwendungszweck: Bestellung 37182</a><br><br>
+        <a>Sobald wir einen Geldeingang bei uns verzeichnen konnten, werden wir Ihre Bestellung weiterbearbeiten.
+        Den Status Ihrer Bestellung können Sie unter folgendem Link verfolgen:</a><br><br>
+        <a href="https://murtfeldt-as.de/track-order?track={{orderId}}&code=8g75j3gs52gs859d7141aaeafc9bbe4d17ea6ee9dafd931f2a4969">https://murtfeldt-as.de/track-order?track={{orderId}}&code=8g75j3gs52gs859d7141aaeafc9bbe4d17ea6ee9dafd931f2a4969</a><br><br>
+        <a>Vielen Dank für Ihr Vertrauen.</a><br>
+        <a>Herzliche Grüße,</a><br>
+        <a>Ihr Team von Murtfeldt Additive Solutions</a><br>
     </td>
 </tbody>
 {% endblock content %}
