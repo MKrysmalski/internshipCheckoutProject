@@ -204,7 +204,7 @@ describe('OrderService', () => {
                 MailerModule.forRoot( {
                     transport: MailConfig.connection,
                     defaults: {
-                        from: '"nest-modules" ping@7pkonzepte.de',
+                        from: '"nest-modules"' + process.env.MAIL,
                     },
                 }),
             ],

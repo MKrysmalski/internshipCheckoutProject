@@ -1,3 +1,4 @@
+require('dotenv').config()
 import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
@@ -8,7 +9,7 @@ const logger = new Logger('Main');
 const microserviceOptions = {
     transport: Transport.GRPC,
     options: {
-        url:'localhost:4321',
+        url:process.env.OPTIONS_URL,
         package: 'app',
         protoPath: join(__dirname, '../../src/grpc/app.proto'),
     },

@@ -14,7 +14,7 @@ import { PaypalModule } from './paypal/paypal.module';
 
 @Module({
     imports: [
-        MongooseModule.forRoot('mongodb://localhost/checkout',{ useFindAndModify: false }),
+        MongooseModule.forRoot('mongodb://'+process.env.HOST+'/checkout',{ useFindAndModify: false }),
         CartModule,
         PdfModule,
         OrderModule,

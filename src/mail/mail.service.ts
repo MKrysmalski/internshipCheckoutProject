@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
+require('dotenv').config()
 import { OrderDocument } from './../order/order.schema';
 import { Injectable } from '@nestjs/common';
 import {MailerService} from "@nestjs-modules/mailer";
@@ -46,7 +47,7 @@ export class MailService {
         try {
             const result = await this.mailerService.sendMail( {
                 to: 'lr@7pkonzepte.de',//mailAddr
-                from: 'ping@7pkonzepte.de',
+                from: process.env.MAIL,
                 subject: `Email: ${data.billingInformation.billingBrandName + ' ' + data.billingInformation.paymentMethod}`,
                 html:html,
                 attachments:[{contentType:"application/pdf",filename:"Rechnung.pdf",content:pdf}]

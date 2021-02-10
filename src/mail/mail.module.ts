@@ -9,7 +9,7 @@ import { MailConfig } from 'config/example.mailer.config'
         MailerModule.forRoot( {
             transport: MailConfig.connection,
             defaults: {
-                from: '"nest-modules" ping@7pkonzepte.de', // outgoing email ID
+                from: '"nest-modules"' + process.env.MAIL, // outgoing email ID
             },
         }),
     ],
