@@ -1,20 +1,15 @@
 {% block content %}
 <tbody>
     <td>
-        <a>vielen Dank für Ihre Bestellung über unser Online Portal.</a><br>
-        <a>Ihre Bestellnummer lautet: {{orderId}}</a><br><br>
+        <a>Der Status Ihrer Bestellung (ID: {{orderId}}) bei Murtfeldt Additive Solutions wurde aktualisiert auf: "ready for processing".</a><br>
+        <a>Für mehr Informationen oder um den Status Ihrer Bestellung nachzuverfolgen können Sie hier nachsehen:</a><br><br>
 
-        <a>Wir prüfen nun Ihre Bestelldaten. Den Status Ihrer Bestellung können Sie unter folgendem Link einsehen:</a><br><br>
+        <a href="https://www.murtfeldt-as.de/track-order?track={{orderId}}&code=8g75j3gs52gs859d7141aaeafc9bbe4d17ea6ee9dafd931f2a4969">https://www.murtfeldt-as.de/track-order?track={{orderId}}&code=8g75j3gs52gs859d7141aaeafc9bbe4d17ea6ee9dafd931f2a4969</a><br><br>
 
-        <a href="https://murtfeldt-as.de/track-order?track={{orderId}}&code=8g75j3gs52gs8587af3dbf027d66640f2a3278c3f18427d07ec2b7">https://murtfeldt-as.de/track-order?track={{orderId}}&code=8g75j3gs52gs8587af3dbf027d66640f2a3278c3f18427d07ec2b7</a><br><br>
+        <a>Falls Sie Fragen haben, können Sie uns gerne kontaktieren, indem Sie hier klicken: <a href="https://www.murtfeldt-as.de/kontaktHallo">https://www.murtfeldt-as.de/kontaktHallo</a> {{billingInformation.firstname}} {{billingInformation.lastname}},</a><br><br>
 
-        <a>Sollten Sie als Bezahlfunktion Banküberweisung gewählt haben, erhalten Sie in Kürze eine E-Mail mit unseren Kontodaten und Bezahlinformationen.</a><br><br>
-
-        <a>Sollte Sie diese E-Mail nicht erreichen bitte melden Sie sich kurz bei uns: info@murtfeldt-as.de.</a><br><br>
-
-        <a>Vielen Dank für Ihr Vertrauen und wir freuen uns über die Zusammenarbeit!</a><br>
-        <a>Herzliche Grüße,</a><br>
-        <a>Ihr Team von Murtfeldt Additive Solutions</a><br>
+        <a>Mit freundlichen Grüßen</a><br>
+        <a>Ihr Team von Murtfeldt Additive Solutions</a>
     </td>
 </tbody>
 {% endblock content %}
