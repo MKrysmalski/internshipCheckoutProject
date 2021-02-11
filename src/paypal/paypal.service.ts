@@ -18,15 +18,15 @@ export class PaypalService {
 
     constructor() {
         
-        this.userId = 'AemEOmrQ0RWuCoVFsyhi_8MB7aWR8mbc5USRgKi0p7VXJHJ-IXhkoFFhvM5onE-bKGsvEHNRSeLxX1Ad';
-        this.userSecret = 'ECx-if7e0OGjv-P9tmGWHghCab5je4c1FoMCvA1aiQWYcTUbuVP4PkRTlvQ9GB0ZysRxz7uuDT9NB-0O';
+        this.userId = process.env.PAYPAL_USERID;
+        this.userSecret = process.env.PAYPAL_USERSECRET;
         this.createBearer( this.userId, this.userSecret );
     }
 
     private async createBearer( userId:string, userSecret:string ) {
         
         const response = await axios({
-            url: 'https://api.sandbox.paypal.com/v1/oauth2/token',
+            url: process.env.PAYPAL_URL + '/v1/oauth2/token',
             method: 'POST',
             withCredentials: true,
             headers: {
@@ -56,7 +56,7 @@ export class PaypalService {
         try {
             const response=await axios({
                 method: 'GET',
-                url: 'https://api.sandbox.paypal.com/v2/checkout/orders/'+id,
+                url: process.env.PAYPAL_URL + '/v2/checkout/orders/'+id,
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': this.token
@@ -93,7 +93,7 @@ export class PaypalService {
         
         const response = await axios({
             method: 'POST',
-            url: 'https://api.sandbox.paypal.com/v2/checkout/orders',
+            url: process.env.PAYPAL_URL + '/v2/checkout/orders',
             headers: {
                 'Authorization': this.token,
                 'Content-Type': 'application/json',
