@@ -4,7 +4,6 @@ import { OrderDocument } from './../order/order.schema';
 import { Injectable } from '@nestjs/common';
 import {MailerService} from "@nestjs-modules/mailer";
 import { TwingEnvironment, TwingLoaderFilesystem } from 'twing';
-import { MailConfig } from './../../config/example.mailer.config'
 import { Logger } from '@nestjs/common';
 
 @Injectable()
@@ -13,7 +12,7 @@ export class MailService {
     private logger = new Logger('mailService');
     constructor(private readonly mailerService:MailerService) {
             this.twing=new TwingEnvironment(
-                new TwingLoaderFilesystem(MailConfig.templatePath))
+                new TwingLoaderFilesystem(__dirname + '/templates'))
         }
 
     async sendMail(data: OrderDocument, pdf: any):Promise<void> {

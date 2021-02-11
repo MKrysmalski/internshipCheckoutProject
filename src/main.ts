@@ -11,7 +11,7 @@ const microserviceOptions = {
     options: {
         url:process.env.OPTIONS_URL,
         package: 'app',
-        protoPath: join(__dirname, '../../src/grpc/app.proto'),
+        protoPath: join(__dirname, './grpc/app.proto'),
     },
 }
 

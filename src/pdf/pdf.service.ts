@@ -2,7 +2,6 @@ import { OrderDocument } from './../order/order.schema';
 import { Injectable } from '@nestjs/common';
 import { TwingEnvironment, TwingLoaderFilesystem } from 'twing';
 import * as puppeteer from 'puppeteer';
-import { PdfConfig } from '../../config/example.pdf.config'
 import { Logger } from '@nestjs/common';
 
 @Injectable()
@@ -13,7 +12,7 @@ export class PdfService {
 
     constructor() {
         this.twing = new TwingEnvironment(
-            new TwingLoaderFilesystem(PdfConfig.templatePath)
+            new TwingLoaderFilesystem(__dirname + '/templates')
         );
     }
 
