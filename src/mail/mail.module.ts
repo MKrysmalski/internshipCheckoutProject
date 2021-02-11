@@ -7,16 +7,16 @@ import { MailerModule } from "@nestjs-modules/mailer";
     imports: [
         MailerModule.forRoot( {
             transport: {
-                host: 'w01553e9.kasserver.com',
-                    port: 465,
+                host: process.env.MAILER_HOST,
+                    port: process.env.MAILER_PORT,
                 tls: {
-                    ciphers: 'SSLv3',
+                    ciphers: process.env.MAILER_TLS_CIPHERS,
                     rejectUnauthorized: false,
                 },
                 secure: true, // true for 465, false for other ports
                 auth: {
-                    user: 'm04542e1',
-                    pass: 'JDZu-fdGUacP.r8xwG',
+                    user: process.env.MAILER_USER,
+                    pass: process.env.MAILER_PASSWORD,
                 },
             },
             defaults: {
