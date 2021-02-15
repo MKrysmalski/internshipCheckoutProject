@@ -38,7 +38,12 @@
             <h4 style="width:100%">Gesamtbetrag: <a style="float:right">{{((costs + 4.96)*(1.19))|round(2, 'common')}} EUR</a></h4>
         </div>
     </div>
-    <h4 style="text-align:center; margin-top:1vh">Die Rechnung wurde bereits bezahlt</h4>
+    {% if status == 'payed' %}
+    <h4 style="text-align:center; margin-top:1vh">Die Rechnung wurde bereits bezahlt.</h4>
+    {% endif %}
+    {% if status == 'WAIT FOR PAYMENT' %}
+    <h4 style="text-align:center; margin-top:1vh">Die Rechnung wurde noch nicht bezahlt.</h4>
+    {% endif %}
     <div style="margin-top:1vh">Die aufgeführten Dienstleistungen haben Sie gemäß unseren AGB erhalten.
     Wenn nicht anders angegeben, entspricht das Leistungsdatum dem Rechnungsdatum.
     </div>
