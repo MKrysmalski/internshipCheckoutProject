@@ -33,9 +33,9 @@
     <div style="display:flex; width: 95%; margin-left:2.5%">
         <div style="flex-grow:1"><br><br><h4>Wir danken Ihnen für Ihren Auftrag!</h4></div>
         <div style="flex-grow:1">
-            Nettobetrag: <br>
-            zzgl. 19 % MwSt: <br>
-            <h4>Gesamtbetrag: {{costs}}€</h4>
+            <div style="width:100%">Nettobetrag: <a style="float:right">{{costs + 4.96}} EUR</a></div>
+            <div style="width:100%">zzgl. 19 % MwSt: <a style="float:right">{{((costs + 4.96)*(1.19)-(costs))|round(2, 'common')}} EUR</a></div>
+            <h4 style="width:100%">Gesamtbetrag: <a style="float:right">{{((costs + 4.96)*(1.19))|round(2, 'common')}} EUR</a></h4>
         </div>
     </div>
     <h4 style="text-align:center; margin-top:1vh">Die Rechnung wurde bereits bezahlt</h4>
