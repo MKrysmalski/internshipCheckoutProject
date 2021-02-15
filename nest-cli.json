@@ -2,6 +2,6 @@
   "collection": "@nestjs/schematics",
   "sourceRoot": "src",
   "compilerOptions": {
-      "assets": ["**/*.proto", "**/*.twig"]
+      "assets": ["**/*.proto", "**/*.twig", "**/*.png"]
   }
 }
