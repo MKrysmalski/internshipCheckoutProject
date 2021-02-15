@@ -1,0 +1,28 @@
+{% block header %}
+    <img class="logo" src="https://murtfeldt-as.de/img/logo.69e41a1d.png" alt="Hallo">
+    <div class="header-information">
+        <div>
+            <div class="murtfeldt-address">Murtfeldt Additive Solutions GmbH - Jopestr. 14 - 72072 Tübingen</div>
+            <div class="user-data">
+                {{shippingInformation.firstname}} {{shippingInformation.lastname}}</br>
+                {{shippingInformation.street}}</br>
+                {{shippingInformation.postalCode}} {{shippingInformation.city}}</br>
+                {{shippingInformation.city}}</br>
+            </div>
+        </div>
+        <div class="murtfeldt-information">
+            Murtfeldt  Additive  Solutions</br>
+            GmbH</br>
+            Jopestr. 14</br>
+            72072 Tübingen</br></br>
+            Tel.: +49 (0) 7071 13886 0</br>
+            info@murtfeldt-as.de</br>
+            murtfeldt-as.de</br>
+        </div>
+    </div>
+    <div class="problem-information">
+        <div>Ihr Zeichen<br>{{orderId}}</div>
+        <div>Rechungsnummer<br>{{_id}}</div>
+        <div>Datum<br>{{ "now"|date("d.m.Y") }}</div>
+    </div>
+{% endblock header %}
