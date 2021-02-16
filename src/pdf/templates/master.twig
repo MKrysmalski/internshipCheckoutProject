@@ -26,6 +26,7 @@
     <table>
         <thead>
             <td>
+            {{ items|length + 1}}
                 {% block header %}
                 {% endblock header %}
             </td>
@@ -36,7 +37,12 @@
                 {% endblock content %}
             </td>
         </tbody>
-        
+        <tbody>
+            <td>
+                {% block content2 %}
+                {% endblock content2 %}
+            </td>
+        </tbody>
         <tfoot>
             <td>
                 {% block footer %}
