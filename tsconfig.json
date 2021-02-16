@@ -11,6 +11,6 @@
     "outDir": "./dist",
     "baseUrl": "./",
     "incremental": true,
-    "resolveJsonModule": false
+    "resolveJsonModule": false,
   }
 }
