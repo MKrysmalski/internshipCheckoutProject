@@ -20,29 +20,7 @@
         <div style="width: 15%">{{item.costs}} EUR</div>
     </div>
 {% endfor %}
-{% for item in items %}
-    <div class="item-container">
-        <div style="width: 5%">{{loop.index}}</div>
-        <div style="width: 15%"><img class="logo" src="https://upload.wikimedia.org/wikipedia/commons/1/1b/Square_200x200.png" alt="Hallo"></div>
-        <div style="width: 45%">ID: {{item.referencedId}}</div>
-        <div style="width: 10%">19%</div>
-        <div style="width: 10%">{{item.quantity}}</div>
-        <div style="width: 15%">{{item.costs}} EUR</div>
-    </div>
-{% endfor %}
-{% for item in items %}
-{% if item.referencedId is same as ("9411d7f2-58fd-4932-bfea-56b563f231a0") %}
-    <div class="item-container">
-        <div style="width: 5%">{{loop.index}}</div>
-        <div style="width: 15%"><img class="logo" src="https://upload.wikimedia.org/wikipedia/commons/1/1b/Square_200x200.png" alt="Hallo"></div>
-        <div style="width: 45%">ID: {{item.referencedId}}</div>
-        <div style="width: 10%">19%</div>
-        <div style="width: 10%">{{item.quantity}}</div>
-        <div style="width: 15%">{{item.costs}} EUR</div>
-    </div>
-    {% endif %}
-{% endfor %}
-    {% if items|length + 4 <= 5 %}
+    {% if items|length <= 5 %}
     <div class="item-container">
         <div style="width: 5%">{{ items|length + 1}}</div>
         <div style="width: 15%"></div>
@@ -53,7 +31,7 @@
     </div>
     {% endif %}
 </div>
-{% if items|length + 4 <= 5 %}
+{% if items|length  <= 5 %}
 <div class="billing-finish-container"></div>
     <div style="display:flex; width: 95%; margin-left:2.5%">
         <div style="flex-grow:1"><br><br><h4>Wir danken Ihnen für Ihren Auftrag!</h4></div>

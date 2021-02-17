@@ -8,13 +8,13 @@
 {% block content %}
     {% include 'murtfeldt/components/billing.twig' %}
 {% endblock content %}
-{% if items|length + 4 > 5 %}
 
 {% block content2 %}
+{% if items|length > 5 %}
     {% include 'murtfeldt/components/billing2.twig' %}
+{% endif %}
 {% endblock content2 %}
 
-{% endif %}
 {% block footer %}
     {% include 'murtfeldt/components/footer.twig' %}
 {% endblock footer %}
