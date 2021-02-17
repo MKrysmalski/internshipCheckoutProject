@@ -20,6 +20,7 @@
         <div style="width: 15%">{{item.costs}} EUR</div>
     </div>
 {% endfor %}
+    {% if items|length <= 5 %}
     <div class="item-container">
         <div style="width: 5%">{{ items|length + 1}}</div>
         <div style="width: 15%"></div>
@@ -28,7 +29,10 @@
         <div style="width: 10%">1</div>
         <div style="width: 15%">4.96 EUR</div>
     </div>
+    {% endif %}
 </div>
-    <div style="margin-top:1vh">Die aufgeführten Dienstleistungen haben Sie gemäß unseren AGB erhalten.
+    {% if items|length <= 5 %}
+    <div style="margin-top:1vh">Die aufgeführten Dienstleistungen haben Sie gemäß unseren AGB erhalten.</div>
+    {% endif %}
 </div>
 {% endblock content %}

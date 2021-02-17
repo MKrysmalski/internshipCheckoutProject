@@ -1,0 +1,24 @@
+<div style="margin-top: 2em; min-height: 86vh">
+{% for item in items %}
+    <div class="item-container" style="width: 80vw; margin-left: 10vw; border: 1px solid black">
+        <div style="width: 5%">{{loop.index}}</div>
+        <div style="width: 15%"><img class="logo" src="https://upload.wikimedia.org/wikipedia/commons/1/1b/Square_200x200.png" alt="Hallo"></div>
+        <div style="width: 45%">ID: {{item.referencedId}}</div>
+        <div style="width: 10%">19%</div>
+        <div style="width: 10%">{{item.quantity}}</div>
+        <div style="width: 15%">{{item.costs}} EUR</div>
+    </div>
+{% endfor %}
+    <div class="item-container" style="width: 80vw; margin-left: 10vw">
+        <div style="width: 5%">{{ items|length + 1}}</div>
+        <div style="width: 15%"></div>
+        <div style="width: 45%">Verpackung und Versand</div>
+        <div style="width: 10%">19%</div>
+        <div style="width: 10%">1</div>
+        <div style="width: 15%">4.96 EUR</div>
+    </div>
+    <div style="width: 80vw; margin-left: 10vw">
+<div class="billing-finish-container"></div>
+    <div style="margin-top:1vh">Die aufgeführten Dienstleistungen haben Sie gemäß unseren AGB erhalten.
+    </div>
+</div></div>
