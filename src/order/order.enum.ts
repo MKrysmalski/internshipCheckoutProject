@@ -2,7 +2,8 @@ export enum PaymentMethod {
     paypal='paypal',
     billing='billing',
     prepaid='prepaid',
-    quote='quote'
+    quote='quote',
+    offer='offer'
 }
 
 export enum BillingBrandName {

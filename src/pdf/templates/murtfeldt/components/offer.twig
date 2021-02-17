@@ -1,0 +1,58 @@
+{% block content %}
+<div class="main-content">
+<div class="item-container-wrapper">
+    <h2>Rechnung</h2>
+    <div class="item-container" style="border-top: 1px solid black">
+        <div style="width: 5%">Pos</div>
+        <div style="width: 15%">Vorschau</div>
+        <div style="width: 45%">Leistung</div>
+        <div style="width: 10%">MwSt.</div>
+        <div style="width: 10%">Anzahl</div>
+        <div style="width: 15%">Gesamtkosten</div>
+    </div>
+{% for item in items %}
+    <div class="item-container">
+        <div style="width: 5%">{{loop.index}}</div>
+        <div style="width: 15%"><img class="logo" src="https://upload.wikimedia.org/wikipedia/commons/1/1b/Square_200x200.png" alt="Hallo"></div>
+        <div style="width: 45%">ID: {{item.referencedId}}</div>
+        <div style="width: 10%">19%</div>
+        <div style="width: 10%">{{item.quantity}}</div>
+        <div style="width: 15%">{{item.costs}} EUR</div>
+    </div>
+{% endfor %}
+    {% if items|length <= 5 %}
+    <div class="item-container">
+        <div style="width: 5%">{{ items|length + 1}}</div>
+        <div style="width: 15%"></div>
+        <div style="width: 45%">Verpackung und Versand</div>
+        <div style="width: 10%">19%</div>
+        <div style="width: 10%">1</div>
+        <div style="width: 15%">4.96 EUR</div>
+    </div>
+    {% endif %}
+</div>
+{% if items|length  <= 5 %}
+<div class="billing-finish-container"></div>
+    <div style="display:flex; width: 95%; margin-left:2.5%">
+        <div style="flex-grow:1"><br><br><h4>Wir danken Ihnen für Ihren Auftrag!</h4></div>
+        <div style="flex-grow:1">
+            <div style="width:100%">Nettobetrag: <a style="float:right">{{costs + 4.96}} EUR</a></div>
+            <div style="width:100%">zzgl. 19 % MwSt: <a style="float:right">{{((costs + 4.96)*(1.19)-(costs))|round(2, 'common')}} EUR</a></div>
+            <h4 style="width:100%">Gesamtbetrag: <a style="float:right">{{((costs + 4.96)*(1.19))|round(2, 'common')}} EUR</a></h4>
+        </div>
+    </div>
+    {% if status is same as ("payed") %}
+    <h4 style="text-align:center; margin-top:1vh">Die Rechnung wurde bereits bezahlt.</h4>
+    {% endif %}
+    {% if status is same as ("WAIT FOR PAYMENT") %}
+    <h4 style="text-align:center; margin-top:1vh">Die Rechnung wurde noch nicht bezahlt.</h4>
+    {% endif %}
+    {% if status is same as ("CREATED") %}
+    <h4 style="text-align:center; margin-top:1vh">Die Rechnung wurde bereits bezahlt.</h4>
+    {% endif %}
+    <div style="margin-top:1vh">Die aufgeführten Dienstleistungen haben Sie gemäß unseren AGB erhalten.
+    Wenn nicht anders angegeben, entspricht das Leistungsdatum dem Rechnungsdatum.
+    </div>
+{% endif %}
+</div>
+{% endblock content %}

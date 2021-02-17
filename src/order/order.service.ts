@@ -146,6 +146,21 @@ export class OrderService {
                 payment:`Email send to ${ order.billingInformation.email }: ${order.status}`
             }
 
+        }
+        else if (order.billingInformation.paymentMethod=="offer") {
+
+            /*
+            Email versenden mit Bankdaten und Bestellung
+            */
+            const pdf = await this.pdfService.generatePdf(order);
+            await this.mailService.sendMail(order,pdf);
+            order.status='WAIT FOR PAYMENT';
+            await order.save()
+            return { 
+                order: order,
+                payment:`Email send to ${ order.billingInformation.email }: ${order.status}`
+            }
+
         } else if (order.billingInformation.paymentMethod=="billing") {
 
             /*
