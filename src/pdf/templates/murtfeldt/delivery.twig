@@ -9,6 +9,12 @@
     {% include 'murtfeldt/components/delivery.twig' %}
 {% endblock content %}
 
+{% block content2 %}
+{% if items|length > 5 %}
+    {% include 'murtfeldt/components/delivery2.twig' %}
+{% endif %}
+{% endblock content2 %}
+
 
 {% block footer %}
     {% include 'murtfeldt/components/footer.twig' %}
