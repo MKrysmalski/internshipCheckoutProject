@@ -20,7 +20,7 @@
         <div style="width: 15%">{{item.costs}} EUR</div>
     </div>
 {% endfor %}
-    {% if items|length <= 5 %}
+    {% if items|length <= 4 %}
     <div class="item-container">
         <div style="width: 5%">{{ items|length + 1}}</div>
         <div style="width: 15%"></div>
@@ -31,7 +31,7 @@
     </div>
     {% endif %}
 </div>
-{% if items|length  <= 5 %}
+{% if items|length  <= 4 %}
 <div class="billing-finish-container"></div>
     <div style="display:flex; width: 95%; margin-left:2.5%">
         <div style="flex-grow:1"><br><br><h4>Wir danken Ihnen für Ihren Auftrag!</h4></div>
@@ -41,18 +41,11 @@
             <h4 style="width:100%">Gesamtbetrag: <a style="float:right">{{((costs + 4.96)*(1.19))|round(2, 'common')}} EUR</a></h4>
         </div>
     </div>
-    {% if status is same as ("payed") %}
-    <h4 style="text-align:center; margin-top:1vh">Die Rechnung wurde bereits bezahlt.</h4>
-    {% endif %}
-    {% if status is same as ("WAIT FOR PAYMENT") %}
-    <h4 style="text-align:center; margin-top:1vh">Die Rechnung wurde noch nicht bezahlt.</h4>
-    {% endif %}
-    {% if status is same as ("CREATED") %}
-    <h4 style="text-align:center; margin-top:1vh">Die Rechnung wurde bereits bezahlt.</h4>
-    {% endif %}
-    <div style="margin-top:1vh">Die aufgeführten Dienstleistungen haben Sie gemäß unseren AGB erhalten.
-    Wenn nicht anders angegeben, entspricht das Leistungsdatum dem Rechnungsdatum.
-    </div>
+    <br>
+    Wenn Sie die aufgef ̈uhrten Teile bestellen möchten,<br>
+    kontaktieren Sie uns bitte per E-Mail an <a style="font-weight:900">info@murtfeldt-as.de<a><br>
+    oder per Telefon unter der Nummer <a style="font-weight:900">+49 (0) 7071 13886 0<a><br>
+    Bitte geben Sie immer die oben aufgef ̈uhrte Angebotsnummer mit an.
 {% endif %}
 </div>
 {% endblock content %}
